@@ -1,24 +1,18 @@
 import React, { Component } from 'react';
 
-class App extends Component {
+class Counter extends Component {
   state = {
     count: 0
   };
 
   add = () => {
     const value = this.countSelect.value * 1;
-    const count = this.state.count + value;
-    this.setState({
-      count
-    });
+    this.props.addCount(value);
   };
 
   subtract = () => {
     const value = this.countSelect.value * 1;
-    const count = this.state.count - value;
-    this.setState({
-      count
-    });
+    this.props.minusCount(value);
   };
 
   addIf = () => {
@@ -42,7 +36,7 @@ class App extends Component {
   };
 
   render() {
-    const { count } = this.state;
+    const { count } = this.props;
     return (
       <div>
         <div>timer:{count}</div>
@@ -61,4 +55,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Counter;

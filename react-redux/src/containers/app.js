@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
 
-import { getComments, addComment, delComment } from '../redux/actions';
-import App from '../components/app';
+import Counter from '../components/counter';
+import { addCount, minusCount } from '../redux/actions';
+
 export default connect(
-  state => ({ comments: state.comments }),
-  { getComments, addComment, delComment }
-)(App);
+  state => ({ count: state.counter }),
+  { addCount, minusCount }
+)(Counter);
