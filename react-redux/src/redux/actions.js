@@ -1,4 +1,11 @@
-import { ADD_COUNT, MINUS_COUNT } from './action-types';
+import { ADD, MINUS } from './action-types';
 
-export const addCount = number => ({ type: ADD_COUNT, number });
-export const minusCount = number => ({ type: MINUS_COUNT, number });
+export const add = number => ({ type: ADD, number });
+export const minus = number => ({ type: MINUS, number });
+export const asyncAdd = number => {
+  return dispatch => {
+    setTimeout(() => {
+      dispatch(add(number));
+    }, 1000);
+  };
+};

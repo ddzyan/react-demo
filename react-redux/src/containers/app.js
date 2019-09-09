@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
 import Counter from '../components/counter';
-import { addCount, minusCount } from '../redux/actions';
+import { add, minus, asyncAdd } from '../redux/actions';
 
 export default connect(
   state => ({ count: state.counter }),
-  { addCount, minusCount }
+  { add, minus, asyncAdd }
 )(Counter);

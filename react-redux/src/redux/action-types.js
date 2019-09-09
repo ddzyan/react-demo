@@ -1,2 +1,3 @@
-export const ADD_COUNT = 'add_count';
-export const MINUS_COUNT = 'minus_count';
+export const ADD = 'add';
+export const MINUS = 'minus';
+export const ASYNC_ADD = 'async_add';

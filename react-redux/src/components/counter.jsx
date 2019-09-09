@@ -7,12 +7,12 @@ class Counter extends Component {
 
   add = () => {
     const value = this.countSelect.value * 1;
-    this.props.addCount(value);
+    this.props.add(value);
   };
 
   subtract = () => {
     const value = this.countSelect.value * 1;
-    this.props.minusCount(value);
+    this.props.minus(value);
   };
 
   addIf = () => {
@@ -27,12 +27,7 @@ class Counter extends Component {
 
   addAsync = () => {
     const value = this.countSelect.value * 1;
-    setTimeout(() => {
-      const count = this.state.count + value;
-      this.setState({
-        count
-      });
-    }, 1000);
+    this.props.asyncAdd(value);
   };
 
   render() {
