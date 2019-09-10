@@ -1,0 +1,10 @@
+.App-header {
+  background-color: cornflowerblue;
+  color: white;
+}
+
+.container-fluid {
+  background-color: aqua;
+  color: red;
+  height: 200px;
+}
