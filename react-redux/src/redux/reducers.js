@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux';
 import { ADD, MINUS } from './action-types';
 
 const counter = (state = 0, action) => {
@@ -7,9 +6,10 @@ const counter = (state = 0, action) => {
       return state + action.number;
     case MINUS:
       return state - action.number;
+
     default:
       return state;
   }
 };
 
-export default combineReducers({ counter });
+export default counter;

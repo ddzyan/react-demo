@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import { ADD_COMMENT, DEL_COMMENT, RECEVICE_COMMENT } from './ation-types';
+import { ADD_COMMENT, DEL_COMMENT, RECEVICE_COMMENT } from './action-types';
 const initComments = [];
 
 const comments = (state = initComments, action) => {

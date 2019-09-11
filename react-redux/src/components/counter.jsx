@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 
 class Counter extends Component {
-  state = {
-    count: 0
-  };
-
   add = () => {
     const value = this.countSelect.value * 1;
     this.props.add(value);
@@ -19,9 +15,7 @@ class Counter extends Component {
     const value = this.countSelect.value * 1;
     const count = this.state.count + value;
     if ((count + value) % 2 === 0) {
-      this.setState({
-        count
-      });
+      this.props.add(value);
     }
   };
 

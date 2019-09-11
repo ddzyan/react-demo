@@ -1,4 +1,4 @@
-import { ADD_COMMENT, DEL_COMMENT, RECEVICE_COMMENT } from './ation-types';
+import { ADD_COMMENT, DEL_COMMENT, RECEVICE_COMMENT } from './action-types';
 
 export const addComment = comment => ({ type: ADD_COMMENT, data: comment });
 export const delComment = index => ({ type: DEL_COMMENT, data: index });
