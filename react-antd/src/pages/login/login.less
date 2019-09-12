@@ -1,0 +1,41 @@
+.login {
+  width: 100%; //宽度铺满
+  height: 100%; // 长度铺满
+  background-image: url('./images/bg.jpg'); // 背景图片
+  background-size: 100% 100%; // 背景图片尺寸
+  .login-header {
+    display: flex; // 弹性布局
+    //justify-content: center; 左右居中
+    align-items: center; // 上下居中
+    height: 80px; //长度
+    background-color: rgba(21, 20, 13, 0.5); // 设置背景颜色和透明度
+    img {
+      width: 40px; //图片宽度
+      height: 40px; //图片长度
+      margin: 0px 15px 0px 50px; //图片外边距:上 右 下 左 外边距
+    }
+    h1 {
+      margin: 0px 0px 4px 0px;
+      font-size: 30px; // 字体大小
+      color: white; // 字体颜色
+    }
+  }
+  .login-content {
+    width: 400px; // 宽度
+    height: 300px; // 长度
+    background-color: white; // 背景颜色
+    margin: 50px auto; // 外边距
+    padding: 20px 40px; // 内边距
+    h2 {
+      text-align: center; //文本对齐方式 居中
+      font-size: 30px; // 文本尺寸
+      font-weight: bold; // 字体加粗
+      margin-bottom: 20px; // 外边距 下
+    }
+    .login-form {
+      .login-form-button {
+        width: 100%; // 宽度
+      }
+    }
+  }
+}
