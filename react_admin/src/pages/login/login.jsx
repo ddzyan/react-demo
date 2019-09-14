@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button, message } from 'antd';
 
 import logo from '../../assets/images/logo.png';
 import './login.less';
@@ -7,8 +7,36 @@ import './login.less';
 const { Item } = Form;
 
 class Login extends Component {
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFields(async (error, value) => {
+      if (!error) {
+        const { username, password } = value;
+        if ((username, password)) {
+          message.success(`username:${username}登陆成功`);
+        }
+      } else {
+        message.error('验证失败');
+      }
+    });
+  };
+
+  validator = (rule, value, callback) => {
+    if (!value) {
+      callback('密码不能为空');
+    } else if (value.length > 12) {
+      callback('密码不能大于12位');
+    } else if (value.length < 4) {
+      callback('密码不能小于4位');
+    } else if (!/^[a-zA-Z0-9_]+$/.test(value)) {
+      callback('密码只能为密码数字下划线组成');
+    } else {
+      callback();
+    }
+  };
   state = {};
   render() {
+    const { getFieldDecorator } = this.props.form;
     return (
       <div className="login">
         <header className="login-title">
@@ -19,10 +47,14 @@ class Login extends Component {
           <h2>登录</h2>
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Item>
-              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="用户名" />
+              {getFieldDecorator('username', {
+                rules: [{ required: true, whitespace: true, message: '用户名必须输入' }, { min: 4, message: '用户名不能小于4位数' }, { max: 12, message: '用户名不能大于12位数' }]
+              })(<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="用户名" />)}
             </Item>
             <Item>
-              <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="密码" />
+              {getFieldDecorator('password', { rules: [{ validator: this.validator }] })(
+                <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="密码" />
+              )}
             </Item>
             <Item>
               <Button type="primary" htmlType="submit" className="login-form-button">
