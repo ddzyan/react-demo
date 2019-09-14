@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import Login from './pages/login/login';
 
@@ -10,6 +10,7 @@ class App extends Component {
       <BrowserRouter>
         <Switch>
           <Route path="/login" component={Login}></Route>
+          <Redirect to="/login"></Redirect>
         </Switch>
       </BrowserRouter>
     );
