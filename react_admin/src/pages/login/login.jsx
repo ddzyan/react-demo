@@ -3,6 +3,7 @@ import { Form, Icon, Input, Button, message } from 'antd';
 
 import logo from '../../assets/images/logo.png';
 import './login.less';
+import { login } from '../../api/login'
 
 const { Item } = Form;
 
@@ -13,7 +14,10 @@ class Login extends Component {
       if (!error) {
         const { username, password } = value;
         if ((username, password)) {
-          message.success(`username:${username}登陆成功`);
+          const result = await login(username, password);
+          if (result.success) {
+            message.success(`username:${username}登陆成功`);
+          }
         }
       } else {
         message.error('验证失败');
@@ -35,7 +39,7 @@ class Login extends Component {
     }
   };
   state = {};
-  render() {
+  render () {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="login">
