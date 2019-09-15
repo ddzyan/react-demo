@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Form, Icon, Input, Button, message } from 'antd';
 
 import logo from '../../assets/images/logo.png';
 import './login.less';
-import { login } from '../../api/login'
+import { login } from '../../api';
+import memoryUtils from '../../utils/memoryUtils';
 
 const { Item } = Form;
 
@@ -14,10 +16,11 @@ class Login extends Component {
       if (!error) {
         const { username, password } = value;
         if ((username, password)) {
-          const result = await login(username, password);
-          if (result.success) {
-            message.success(`username:${username}登陆成功`);
-          }
+          const response = await login(username, password);
+          message.success(`登陆成功${response.data.token}`);
+          memoryUtils.user = response.data;
+          console.log(memoryUtils.user);
+          this.props.history.replace('/');
         }
       } else {
         message.error('验证失败');
@@ -39,7 +42,12 @@ class Login extends Component {
     }
   };
   state = {};
-  render () {
+  render() {
+    const { user } = memoryUtils;
+    if (user) {
+      return <Redirect to="/"></Redirect>;
+    }
+
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="login">
