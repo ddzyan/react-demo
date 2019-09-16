@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
 import { Layout } from 'antd';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Switch, Route } from 'react-router-dom';
 
 import './admin.less';
-import memoryUtils from '../../utils/memoryUtils';
 
+import Home from '../home/home';
+import Category from '../category/category';
+import Bar from '../charts/bar';
+import Line from '../charts/line';
+import Pie from '../charts/pie';
+import Order from '../order/order';
+import Product from '../product/product';
+import Role from '../role/role';
+import User from '../user/user';
+
+import memoryUtils from '../../utils/memoryUtils';
 import LeftNav from '../../components/left-nav';
 import Header from '../../components/header';
 const { Footer, Sider, Content } = Layout;
@@ -23,7 +33,20 @@ class Admin extends Component {
         </Sider>
         <Layout>
           <Header>Header</Header>
-          <Content>Content</Content>
+          <Content style={{ backgroundColor: '#fff' }}>
+            <Switch>
+              <Redirect from="/" exact to="/home" />
+              <Route path="/home" component={Home} />
+              <Route path="/category" component={Category} />
+              <Route path="/product" component={Product} />
+              <Route path="/user" component={User} />
+              <Route path="/role" component={Role} />
+              <Route path="/charts/bar" component={Bar} />
+              <Route path="/charts/pie" component={Pie} />
+              <Route path="/charts/line" component={Line} />
+              <Route path="/order" component={Order} />
+            </Switch>
+          </Content>
           <Footer style={{ textAlign: 'center', color: '#cccc' }}>推荐使用谷歌浏览器,获得更好的使用体验</Footer>
         </Layout>
       </Layout>
