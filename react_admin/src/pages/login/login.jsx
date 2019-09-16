@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import { Form, Icon, Input, Button, message } from 'antd';
 
 import logo from '../../assets/images/logo.png';
@@ -11,6 +10,13 @@ import storageUtils from '../../utils/storageUtils';
 const { Item } = Form;
 
 class Login extends Component {
+  /**
+   * 表单提交事件
+   * 1.关闭默认事件
+   * 2.判断表单验证是否通过
+   * 3.发送登陆请求
+   * 4.内存和本地存储，页面跳转
+   */
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields(async (error, value) => {
@@ -50,11 +56,6 @@ class Login extends Component {
   };
   state = {};
   render() {
-    const { user } = memoryUtils;
-    if (user && user.id) {
-      return <Redirect to="/"></Redirect>;
-    }
-
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="login">
