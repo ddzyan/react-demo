@@ -17,9 +17,11 @@ import User from '../user/user';
 import memoryUtils from '../../utils/memoryUtils';
 import LeftNav from '../../components/left-nav';
 import Header from '../../components/header';
+
 const { Footer, Sider, Content } = Layout;
 class Admin extends Component {
   state = {};
+
   render() {
     const { user } = memoryUtils;
     if (!user.id) {
