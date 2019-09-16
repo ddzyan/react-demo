@@ -6,6 +6,7 @@ import logo from '../../assets/images/logo.png';
 import './login.less';
 import { login } from '../../api';
 import memoryUtils from '../../utils/memoryUtils';
+import storageUtils from '../../utils/storageUtils';
 
 const { Item } = Form;
 
@@ -16,10 +17,11 @@ class Login extends Component {
       if (!error) {
         const { username, password } = value;
         if ((username, password)) {
+          // 使用同步的方式编写异步代码，代码执行顺序为同步顺序
           const response = await login(username, password);
-          message.success(`登陆成功${response.data.token}`);
+          message.success(`用户: ${response.data.username} 欢迎回来`);
           memoryUtils.user = response.data;
-          console.log(memoryUtils.user);
+          storageUtils.saveUser(response.data);
           this.props.history.replace('/');
         }
       } else {
@@ -28,6 +30,11 @@ class Login extends Component {
     });
   };
 
+  /**
+   * value 输入的内容
+   * callback 回调内包含字符串则表示验证失败
+   * callback 不包含则代表回调成功
+   */
   validator = (rule, value, callback) => {
     if (!value) {
       callback('密码不能为空');
@@ -44,7 +51,7 @@ class Login extends Component {
   state = {};
   render() {
     const { user } = memoryUtils;
-    if (user) {
+    if (user && user.id) {
       return <Redirect to="/"></Redirect>;
     }
 
