@@ -34,8 +34,8 @@ class Admin extends Component {
           <LeftNav />
         </Sider>
         <Layout>
-          <Header>Header</Header>
-          <Content style={{ backgroundColor: "#fff" }}>
+          <Header />
+          <Content style={{ backgroundColor: "#fff", margin: 20 }}>
             <Switch>
               <Redirect from="/" exact to="/home" />
               <Route path="/home" component={Home} />

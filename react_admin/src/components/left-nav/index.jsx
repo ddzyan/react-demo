@@ -57,7 +57,7 @@ class LeftNav extends Component {
    * 一般用于初始化同步数据
    * componentDidMount 则用于初始化异步数据，包含：ajax请求，关闭计时器等
    */
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.menuNodes = this.getMenuNodes(menuList);
   }
   /**
@@ -68,8 +68,6 @@ class LeftNav extends Component {
   render() {
     const { pathname: path } = this.props.location;
     const openKey = this.openKey;
-    console.log("render() :", path);
-    console.log("openKey :", openKey);
     return (
       <div className="left-nav">
         <Link to="/" className="left-nav-header">
