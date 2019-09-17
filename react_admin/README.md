@@ -63,3 +63,12 @@ yarn start
 - 根据获得的天气信息，在组件 componentDidMount 周期的时候更新 state
 - 在路由跳转时候，获取匹配的 title 显示
 - 自定义组件 LinkButton ，样式定义为类似 a 标签的效果。解决 a 标签 href 连接错误导致的报警的问题
+
+#### 分类界面搭建
+
+- 完成 home 组件基础静态页面搭建
+- 使用 antd 中的 card 和 table,并且设置基础数据 columns 和 dataSource , 完成 category 卡片和表单的静态页面搭建
+- 设置 card 添加卡片操作按钮添加，设置 card 表格的边框,宽度和 rows 的 Key
+- 封装 获取分类，更新分类，添加分类的 API 接口
+- 在 2 个生命周期中分别同步初始化 colums 数据和异步接口获取初始化 rows 数据
+- 设置 card 的 加载动画,默认显示页数,快速跳转按钮属性

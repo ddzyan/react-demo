@@ -57,14 +57,16 @@ class Header extends Component {
    * 使用 forof 循环，而不是 foreach 因为 foreach 无法在获得匹配内容后跳出，必须循环全部，造成资源浪费
    */
   recursiveQueryTitle = (menuList, pathname) => {
+    // eslint-disable-next-line no-unused-vars
     for (const item of menuList) {
       if (pathname.indexOf(item.key) === 0) {
         return item;
       }
 
       if (item.children) {
-        if (this.recursiveQueryTitle(item.children, pathname)) {
-          return item;
+        const citem = this.recursiveQueryTitle(item.children, pathname);
+        if (citem) {
+          return citem;
         }
       }
     }

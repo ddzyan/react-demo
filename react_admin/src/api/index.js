@@ -3,8 +3,19 @@ import { message } from "antd";
 
 import ajax from "./ajax";
 
+// 登陆
 export const login = async (username, password) =>
   ajax("/login", { username, password }, "POST");
+
+// 添加类别
+export const addCategory = (categoryName, parentId) =>
+  ajax("/manage/category/add", { categoryName, parentId }, "POST");
+// 更新类别
+export const updateCategory = (categoryName, categoryId) =>
+  ajax("/manage/category/update", { categoryName, categoryId }, "POST");
+// 获取类别
+export const getCategory = parentId =>
+  ajax("/manage/category/list", { parentId }, "GET");
 
 //使用 jsonp 发送获取天气连接，jsonp 可以解决浏览器端 GET 请求跨域问题
 export const getWeather = city => {

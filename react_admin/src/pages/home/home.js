@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
+import "./home.less";
 class Home extends Component {
   state = {};
   render() {
-    return <div>Home</div>;
+    return <div className="home">欢迎使用 react 后台</div>;
   }
 }
 
