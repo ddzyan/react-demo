@@ -1,3 +1,4 @@
-import ajax from './ajax';
+import ajax from "./ajax";
 
-export const login = async (username, password) => ajax('/loginUser', { username, password }, 'POST');
+export const login = async (username, password) =>
+  ajax("/login", { username, password }, "POST");

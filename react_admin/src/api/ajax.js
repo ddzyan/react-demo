@@ -2,10 +2,10 @@
  * @Author: dingdongzhao
  * @Date: 2019-09-15 23:50:37
  * @Last Modified by: dingdongzhao
- * @Last Modified time: 2019-09-16 00:14:35
+ * @Last Modified time: 2019-09-17 10:34:17
  */
-import axios from 'axios';
-import { message } from 'antd';
+import axios from "axios";
+import { message } from "antd";
 
 /**
  * 使用单例模式封装 axios,在创建 axios 实例的时候，避免重复传入一样的参数
@@ -15,7 +15,14 @@ import { message } from 'antd';
 
 let instance = null;
 let auth = null;
-export default function(url, data = {}, method = 'GET') {
+/**
+ * 使用新的 Promise 包装 axios的目的为
+ * 1. 优化返回值，返回response.data
+ * 2. 统一错误信息处理,采用 message.error 显示
+ * 3. 不适用 async await 改造为同步流程的目的，是将i/o事件丢给事件循环处理，主线程可以处理其他事件，加快反应速度
+ */
+
+export default function(url, data = {}, method = "GET") {
   return new Promise((resolve, reject) => {
     let promise = null;
     if (!instance) {
@@ -25,7 +32,7 @@ export default function(url, data = {}, method = 'GET') {
         auth
       });
     }
-    if (method === 'GET') {
+    if (method === "GET") {
       promise = instance.get(url, {
         params: data
       });
@@ -35,10 +42,10 @@ export default function(url, data = {}, method = 'GET') {
 
     promise
       .then(response => {
-        if (response.data.success) {
+        if (!response.data.status) {
           resolve(response.data);
         } else {
-          message.error(response.data.message);
+          message.error(response.data.msg);
         }
       })
       .catch(err => {

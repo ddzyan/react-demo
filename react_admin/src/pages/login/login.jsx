@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Form, Icon, Input, Button, message } from 'antd';
+import React, { Component } from "react";
+import { Form, Icon, Input, Button, message } from "antd";
 
-import logo from '../../assets/images/logo.png';
-import './login.less';
-import { login } from '../../api';
-import memoryUtils from '../../utils/memoryUtils';
-import storageUtils from '../../utils/storageUtils';
+import logo from "../../assets/images/logo.png";
+import "./login.less";
+import { login } from "../../api";
+import memoryUtils from "../../utils/memoryUtils";
+import storageUtils from "../../utils/storageUtils";
 
 const { Item } = Form;
 
@@ -28,10 +28,10 @@ class Login extends Component {
           message.success(`用户: ${response.data.username} 欢迎回来`);
           memoryUtils.user = response.data;
           storageUtils.saveUser(response.data);
-          this.props.history.replace('/');
+          this.props.history.replace("/");
         }
       } else {
-        message.error('验证失败');
+        message.error("验证失败");
       }
     });
   };
@@ -43,13 +43,13 @@ class Login extends Component {
    */
   validator = (rule, value, callback) => {
     if (!value) {
-      callback('密码不能为空');
+      callback("密码不能为空");
     } else if (value.length > 12) {
-      callback('密码不能大于12位');
+      callback("密码不能大于12位");
     } else if (value.length < 4) {
-      callback('密码不能小于4位');
+      callback("密码不能小于4位");
     } else if (!/^[a-zA-Z0-9_]+$/.test(value)) {
-      callback('密码只能为密码数字下划线组成');
+      callback("密码只能为密码数字下划线组成");
     } else {
       callback();
     }
@@ -67,17 +67,44 @@ class Login extends Component {
           <h2>登录</h2>
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Item>
-              {getFieldDecorator('username', {
-                rules: [{ required: true, whitespace: true, message: '用户名必须输入' }, { min: 4, message: '用户名不能小于4位数' }, { max: 12, message: '用户名不能大于12位数' }]
-              })(<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="用户名" />)}
-            </Item>
-            <Item>
-              {getFieldDecorator('password', { rules: [{ validator: this.validator }] })(
-                <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="密码" />
+              {getFieldDecorator("username", {
+                rules: [
+                  {
+                    required: true,
+                    whitespace: true,
+                    message: "用户名必须输入"
+                  },
+                  { min: 4, message: "用户名不能小于4位数" },
+                  { max: 12, message: "用户名不能大于12位数" }
+                ]
+              })(
+                <Input
+                  prefix={
+                    <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
+                  }
+                  placeholder="用户名"
+                />
               )}
             </Item>
             <Item>
-              <Button type="primary" htmlType="submit" className="login-form-button">
+              {getFieldDecorator("password", {
+                rules: [{ validator: this.validator }]
+              })(
+                <Input
+                  prefix={
+                    <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
+                  }
+                  type="password"
+                  placeholder="密码"
+                />
+              )}
+            </Item>
+            <Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="login-form-button"
+              >
                 登陆
               </Button>
             </Item>

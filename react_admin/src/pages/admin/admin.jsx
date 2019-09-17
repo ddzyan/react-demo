@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import { Layout } from 'antd';
-import { Redirect, Switch, Route } from 'react-router-dom';
+import React, { Component } from "react";
+import { Layout } from "antd";
+import { Redirect, Switch, Route } from "react-router-dom";
 
-import './admin.less';
+import "./admin.less";
 
-import Home from '../home/home';
-import Category from '../category/category';
-import Bar from '../charts/bar';
-import Line from '../charts/line';
-import Pie from '../charts/pie';
-import Order from '../order/order';
-import Product from '../product/product';
-import Role from '../role/role';
-import User from '../user/user';
+import Home from "../home/home";
+import Category from "../category/category";
+import Bar from "../charts/bar";
+import Line from "../charts/line";
+import Pie from "../charts/pie";
+import Order from "../order/order";
+import Product from "../product/product";
+import Role from "../role/role";
+import User from "../user/user";
 
-import memoryUtils from '../../utils/memoryUtils';
-import LeftNav from '../../components/left-nav';
-import Header from '../../components/header';
+import memoryUtils from "../../utils/memoryUtils";
+import LeftNav from "../../components/left-nav";
+import Header from "../../components/header";
 
 const { Footer, Sider, Content } = Layout;
 class Admin extends Component {
@@ -24,7 +24,7 @@ class Admin extends Component {
 
   render() {
     const { user } = memoryUtils;
-    if (!user.id) {
+    if (!user._id) {
       return <Redirect to="/login"></Redirect>;
     }
 
@@ -35,7 +35,7 @@ class Admin extends Component {
         </Sider>
         <Layout>
           <Header>Header</Header>
-          <Content style={{ backgroundColor: '#fff' }}>
+          <Content style={{ backgroundColor: "#fff" }}>
             <Switch>
               <Redirect from="/" exact to="/home" />
               <Route path="/home" component={Home} />
@@ -49,7 +49,9 @@ class Admin extends Component {
               <Route path="/order" component={Order} />
             </Switch>
           </Content>
-          <Footer style={{ textAlign: 'center', color: '#cccc' }}>推荐使用谷歌浏览器,获得更好的使用体验</Footer>
+          <Footer style={{ textAlign: "center", color: "#cccc" }}>
+            推荐使用谷歌浏览器,获得更好的使用体验
+          </Footer>
         </Layout>
       </Layout>
     );
