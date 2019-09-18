@@ -3,12 +3,13 @@ import { Card, Button, Icon, Table, message, Modal } from "antd";
 
 import LinkButton from "../../components/link-button";
 import "./category.less";
-import { getCategory, updateCategory } from "../../api";
+import { getCategory, updateCategory, addCategory } from "../../api";
 import AddForm from "./add-form";
 import UpdateForm from "./update-form";
 class Category extends Component {
   state = {
     lodding: true,
+    selectCategory: {},
     categorys: [],
     subCategorys: [],
     parentId: "0",
@@ -53,7 +54,7 @@ class Category extends Component {
         width: 300,
         render: category => (
           <span>
-            <LinkButton onClick={() => this.updateModalVisible(2)}>
+            <LinkButton onClick={() => this.showUpdateModal(category)}>
               修改分类
             </LinkButton>
             {this.state.parentId === "0" ? (
@@ -91,34 +92,95 @@ class Category extends Component {
     }
   };
 
-  // 更新弹窗显示状态
-  updateModalVisible = state => {
+  // 显示更新弹窗
+  /**
+   * 由于更新 selectCategory ，不需要进行页面重新渲染
+   * 则不将此属性添加到 state 中
+   */
+  showUpdateModal = category => {
+    this.selectCategory = category;
     this.setState({
-      modalVisible: state
+      modalVisible: 2
+    });
+  };
+
+  // 显示添加弹窗
+  showAddModal = () => {
+    this.setState({
+      modalVisible: 1
+    });
+  };
+
+  // 关闭添加或者更新弹窗
+  closeModal = () => {
+    this.form.resetFields();
+    this.setState({
+      modalVisible: 0
     });
   };
 
   // 添加分类
   addCategory = () => {
-    this.updateModalVisible(0);
+    this.form.validateFields(async (error, value) => {
+      if (!error) {
+        const { parentId, categoryName } = value;
+        const response = await addCategory(categoryName, parentId);
+        if (response.status === 0) {
+          this.getCategorys();
+          message.success("添加成功");
+        } else {
+          message.success("添加失败");
+        }
+        this.closeModal(0);
+      } else {
+        message.error("验证失败");
+      }
+    });
   };
 
-  // 更新分类
-  updateCategory = async () => {
-    const value = this.updateInput.value.trim();
-    await updateCategory();
-    console.log(value);
-    this.updateModalVisible(0);
+  /**
+   * 变量更新需要进行页面重新渲染，则使用state
+   * 变量更新无需进行页面渲染，则直接添加到 this 上
+   *
+   * 通过 this.form 获得 updateForm 组件的输入值
+   * 调用api接口进行更新，成功则重新获取分类列表
+   * 重置表单输入内容 form.resetFields
+   * 关闭弹窗
+   */
+  updateCategory = () => {
+    this.form.validateFields(async (error, value) => {
+      if (!error) {
+        const { categoryName } = value;
+        const response = await updateCategory(
+          categoryName,
+          this.selectCategory._id
+        );
+        if (response && response.status === 0) {
+          this.getCategorys();
+          message.success("修改成功");
+        } else {
+          message.error("验证失败");
+        }
+        this.closeModal();
+      } else {
+        message.error("验证失败");
+      }
+    });
   };
 
   /**
    * 通过获得分类接口，异步加载表格内容
    * 判断分类ID是否为0，来决定显示一级/二级分类
+   *
+   * 通过向子组件 updateForm 传递函数的方式，获取子组件的 form 对象，用来获取用户输入的值
    */
+
   render() {
+    // 防止在第一次渲染的时候，selectCategory 对象为 undefind，导致的获取 name 报错
+    const category = this.selectCategory ? this.selectCategory : {};
     const title = "一级菜单";
     const extra = (
-      <Button type="primary" onClick={() => this.updateModalVisible(1)}>
+      <Button type="primary" onClick={() => this.showAddModal()}>
         <Icon type="plus"></Icon>
         添加
       </Button>
@@ -130,6 +192,7 @@ class Category extends Component {
       parentName,
       subCategorys
     } = this.state;
+
     return (
       <div className="category">
         <Modal
@@ -138,9 +201,15 @@ class Category extends Component {
           okText={"确认"}
           visible={this.state.modalVisible === 1}
           onOk={this.addCategory}
-          onCancel={() => this.updateModalVisible(0)}
+          onCancel={() => this.closeModal()}
         >
-          <AddForm />
+          <AddForm
+            parentId={parentId}
+            categorys={categorys}
+            setForm={form => {
+              this.form = form;
+            }}
+          />
         </Modal>
         <Modal
           title="更新分类"
@@ -148,9 +217,14 @@ class Category extends Component {
           okText={"确认"}
           visible={this.state.modalVisible === 2}
           onOk={this.updateCategory}
-          onCancel={() => this.updateModalVisible(0)}
+          onCancel={() => this.closeModal()}
         >
-          <UpdateForm />
+          <UpdateForm
+            setForm={form => {
+              this.form = form;
+            }}
+            categoryName={category.name}
+          />
         </Modal>
         <Card title={title} className="category-card" extra={extra}>
           <Table

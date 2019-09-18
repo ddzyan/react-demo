@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Form, Select, Input } from "antd";
 
 const Item = Form.Item;
@@ -6,16 +7,34 @@ const Option = Select.Option;
 
 class AddForm extends Component {
   state = {};
+
+  static propTypes = {
+    setForm: PropTypes.func.isRequired, // 通过函数形式向父级传递 form 属性，使之可以获得输入内容
+    categorys: PropTypes.array.isRequired, // 获取需要显示的分类列表，用于选择添加
+    parentId: PropTypes.string.isRequired // 用于显示默认选择的分类，不设置0，是因为可能是在二级菜单点击添加跳转
+  };
+
+  UNSAFE_componentWillMount() {
+    this.props.setForm(this.props.form);
+  }
+
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const {
+      form: { getFieldDecorator },
+      categorys,
+      parentId
+    } = this.props;
     return (
       <Form>
         <Item>
-          {getFieldDecorator("parentId", { initialValue: "0" })(
+          {getFieldDecorator("parentId", { initialValue: parentId })(
             <Select>
-              <Option value="0">一级分类</Option>
-              <Option value="1">家电</Option>
-              <Option value="2">服装</Option>
+              <Option value="0">一级分类列表</Option>
+              {categorys.map((item, index) => (
+                <Option key={index} value={item._id}>
+                  {item.name}
+                </Option>
+              ))}
             </Select>
           )}
         </Item>

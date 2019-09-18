@@ -25,10 +25,14 @@ class Login extends Component {
         if ((username, password)) {
           // 使用同步的方式编写异步代码，代码执行顺序为同步顺序
           const response = await login(username, password);
-          message.success(`用户: ${response.data.username} 欢迎回来`);
-          memoryUtils.user = response.data;
-          storageUtils.saveUser(response.data);
-          this.props.history.replace("/");
+          if (response && response.status === 0) {
+            message.success(`用户: ${response.data.username} 欢迎回来`);
+            memoryUtils.user = response.data;
+            storageUtils.saveUser(response.data);
+            this.props.history.replace("/");
+          } else {
+            message.error("验证失败");
+          }
         }
       } else {
         message.error("验证失败");
