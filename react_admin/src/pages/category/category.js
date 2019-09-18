@@ -1,16 +1,18 @@
-import React, { Component } from 'react';
-import { Card, Button, Icon, Table, message, Modal } from 'antd';
+import React, { Component } from "react";
+import { Card, Button, Icon, Table, message, Modal } from "antd";
 
-import LinkButton from '../../components/link-button';
-import './category.less';
-import { getCategory } from '../../api';
+import LinkButton from "../../components/link-button";
+import "./category.less";
+import { getCategory, updateCategory } from "../../api";
+import AddForm from "./add-form";
+import UpdateForm from "./update-form";
 class Category extends Component {
   state = {
     lodding: true,
     categorys: [],
     subCategorys: [],
-    parentId: '0',
-    parentName: '',
+    parentId: "0",
+    parentName: "",
     modalVisible: 0 // 0隐藏,1显示添加,2显示修改
   };
 
@@ -43,16 +45,24 @@ class Category extends Component {
   initColumns = () => {
     this.columns = [
       {
-        title: '分类名称',
-        dataIndex: 'name'
+        title: "分类名称",
+        dataIndex: "name"
       },
       {
-        title: '操作',
+        title: "操作",
         width: 300,
         render: category => (
           <span>
-            <LinkButton onClick={() => this.updateModalVisible(2)}>修改分类</LinkButton>
-            {this.state.parentId === '0' ? <LinkButton onClick={() => this.showSubCategorys(category)}>查看子分类</LinkButton> : ''}
+            <LinkButton onClick={() => this.updateModalVisible(2)}>
+              修改分类
+            </LinkButton>
+            {this.state.parentId === "0" ? (
+              <LinkButton onClick={() => this.showSubCategorys(category)}>
+                查看子分类
+              </LinkButton>
+            ) : (
+              ""
+            )}
           </span>
         )
       }
@@ -65,7 +75,7 @@ class Category extends Component {
     const result = await getCategory(parentId);
     if (result && result.status === 0) {
       const categorys = result.data;
-      if (Object.is(parentId, '0')) {
+      if (Object.is(parentId, "0")) {
         this.setState({
           lodding: false,
           categorys
@@ -77,7 +87,7 @@ class Category extends Component {
         });
       }
     } else {
-      message.error('获取分类列表失败');
+      message.error("获取分类列表失败");
     }
   };
 
@@ -87,13 +97,17 @@ class Category extends Component {
       modalVisible: state
     });
   };
+
   // 添加分类
   addCategory = () => {
     this.updateModalVisible(0);
   };
 
   // 更新分类
-  updateCategory = () => {
+  updateCategory = async () => {
+    const value = this.updateInput.value.trim();
+    await updateCategory();
+    console.log(value);
     this.updateModalVisible(0);
   };
 
@@ -102,24 +116,51 @@ class Category extends Component {
    * 判断分类ID是否为0，来决定显示一级/二级分类
    */
   render() {
-    const title = '一级菜单';
+    const title = "一级菜单";
     const extra = (
       <Button type="primary" onClick={() => this.updateModalVisible(1)}>
         <Icon type="plus"></Icon>
         添加
       </Button>
     );
-    const { lodding, categorys, parentId, parentName, subCategorys } = this.state;
+    const {
+      lodding,
+      categorys,
+      parentId,
+      parentName,
+      subCategorys
+    } = this.state;
     return (
       <div className="category">
-        <Modal title="Basic Modal" cancelText={'取消'} okText={'确认'} visible={this.state.modalVisible === 1} onOk={this.addCategory} onCancel={() => this.updateModalVisible(0)}>
-          <p>添加</p>
+        <Modal
+          title="添加分类"
+          cancelText={"取消"}
+          okText={"确认"}
+          visible={this.state.modalVisible === 1}
+          onOk={this.addCategory}
+          onCancel={() => this.updateModalVisible(0)}
+        >
+          <AddForm />
         </Modal>
-        <Modal title="Basic Modal" cancelText={'取消'} okText={'确认'} visible={this.state.modalVisible === 2} onOk={this.updateCategory} onCancel={() => this.updateModalVisible(0)}>
-          <p>修改</p>
+        <Modal
+          title="更新分类"
+          cancelText={"取消"}
+          okText={"确认"}
+          visible={this.state.modalVisible === 2}
+          onOk={this.updateCategory}
+          onCancel={() => this.updateModalVisible(0)}
+        >
+          <UpdateForm />
         </Modal>
         <Card title={title} className="category-card" extra={extra}>
-          <Table bordered pagination={{ defaultPageSize: 5, showQuickJumper: true }} loading={lodding} columns={this.columns} dataSource={parentId === '0' ? categorys : subCategorys} rowKey="_id" />
+          <Table
+            bordered
+            pagination={{ defaultPageSize: 5, showQuickJumper: true }}
+            loading={lodding}
+            columns={this.columns}
+            dataSource={parentId === "0" ? categorys : subCategorys}
+            rowKey="_id"
+          />
         </Card>
       </div>
     );
