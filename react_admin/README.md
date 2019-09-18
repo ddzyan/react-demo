@@ -78,3 +78,4 @@ yarn start
 - 通过向 updateForm 组件 props 传递 categoryName ,用于弹窗显示修改前的分类名称。通过向 updateForm 组件传递 函数，用来给 category 组件设置 this.form ，获取 updateForm 组件的参数验证和输入的内容。
 - 完成 更新分类名称 功能，更新完成后刷新 table ,重置表单输入内容和关闭弹窗。
 - 完成 添加分类 功能
+- 完成 card 标题显示和跳转回一级菜单显示功能

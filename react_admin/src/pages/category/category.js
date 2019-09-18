@@ -111,6 +111,15 @@ class Category extends Component {
     });
   };
 
+  // 显示一级分类菜单
+  showCategorys = () => {
+    this.setState({
+      subCategorys: [],
+      parentId: "0",
+      parentName: ""
+    });
+  };
+
   // 关闭添加或者更新弹窗
   closeModal = () => {
     this.form.resetFields();
@@ -176,15 +185,6 @@ class Category extends Component {
    */
 
   render() {
-    // 防止在第一次渲染的时候，selectCategory 对象为 undefind，导致的获取 name 报错
-    const category = this.selectCategory ? this.selectCategory : {};
-    const title = "一级菜单";
-    const extra = (
-      <Button type="primary" onClick={() => this.showAddModal()}>
-        <Icon type="plus"></Icon>
-        添加
-      </Button>
-    );
     const {
       lodding,
       categorys,
@@ -192,6 +192,24 @@ class Category extends Component {
       parentName,
       subCategorys
     } = this.state;
+    // 防止在第一次渲染的时候，selectCategory 对象为 undefind，导致的获取 name 报错
+    const category = this.selectCategory ? this.selectCategory : {};
+    const title = (
+      <span>
+        <LinkButton onClick={this.showCategorys}>一级分类菜单</LinkButton>
+        <Icon
+          type="arrow-right"
+          style={{ display: parentName === "" ? "none" : "block" }}
+        ></Icon>
+        <span>{parentName}</span>
+      </span>
+    );
+    const extra = (
+      <Button type="primary" onClick={() => this.showAddModal()}>
+        <Icon type="plus"></Icon>
+        添加
+      </Button>
+    );
 
     return (
       <div className="category">
