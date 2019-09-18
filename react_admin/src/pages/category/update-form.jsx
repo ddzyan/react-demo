@@ -27,6 +27,7 @@ class UpdateForm extends Component {
           {getFieldDecorator("categoryName", {
             initialValue: categoryName,
             rules: [
+              { required: true, message: "分类名称必须输入" },
               { max: 12, message: "分类名称需要小于12位" },
               { pattern: /^[\u4e00-\u9fa5]+$/, message: "分类名称必须是中文" }
             ]

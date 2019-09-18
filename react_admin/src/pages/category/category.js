@@ -8,13 +8,13 @@ import AddForm from "./add-form";
 import UpdateForm from "./update-form";
 class Category extends Component {
   state = {
-    lodding: true,
-    selectCategory: {},
-    categorys: [],
-    subCategorys: [],
-    parentId: "0",
-    parentName: "",
-    modalVisible: 0 // 0隐藏,1显示添加,2显示修改
+    lodding: true, //是否显示加载动画
+    selectCategory: {}, // 选择中的分类对象,用于传递给更新组件的categoryName
+    categorys: [], // 一级分类列表
+    subCategorys: [], // 二级分类列表
+    parentId: "0", // 选择的分类ID
+    parentName: "", // 选择中的分类名称,用于更新title
+    modalVisible: 0 // 控制显示modal控件,0隐藏,1显示添加,2显示修改
   };
 
   // 初始化异步数据
@@ -71,8 +71,9 @@ class Category extends Component {
   };
 
   // 获取一级/二级分类列表
-  getCategorys = async () => {
-    const { parentId } = this.state;
+  getCategorys = async parentId => {
+    parentId = parentId || this.state.parentId;
+    console.log("刷新分类列表", parentId);
     const result = await getCategory(parentId);
     if (result && result.status === 0) {
       const categorys = result.data;
@@ -92,8 +93,8 @@ class Category extends Component {
     }
   };
 
-  // 显示更新弹窗
   /**
+   * 显示更新弹窗
    * 由于更新 selectCategory ，不需要进行页面重新渲染
    * 则不将此属性添加到 state 中
    */
@@ -128,19 +129,28 @@ class Category extends Component {
     });
   };
 
-  // 添加分类
+  /**
+   * 添加分类列表
+   * 如果添加的分类，不是当前分类列表则不进行刷新
+   * 如果是在二级分类列表，添加一级分类，需要进行刷新，并且传入刷新的分类ID
+   */
   addCategory = () => {
     this.form.validateFields(async (error, value) => {
       if (!error) {
         const { parentId, categoryName } = value;
+        this.closeModal();
         const response = await addCategory(categoryName, parentId);
+        debugger;
         if (response.status === 0) {
-          this.getCategorys();
+          if (this.state.parentId === parentId) {
+            this.getCategorys();
+          } else if (parentId === "0") {
+            this.getCategorys(0);
+          }
           message.success("添加成功");
         } else {
           message.success("添加失败");
         }
-        this.closeModal(0);
       } else {
         message.error("验证失败");
       }
@@ -160,6 +170,7 @@ class Category extends Component {
     this.form.validateFields(async (error, value) => {
       if (!error) {
         const { categoryName } = value;
+        this.closeModal();
         const response = await updateCategory(
           categoryName,
           this.selectCategory._id
@@ -170,7 +181,6 @@ class Category extends Component {
         } else {
           message.error("验证失败");
         }
-        this.closeModal();
       } else {
         message.error("验证失败");
       }
@@ -194,16 +204,16 @@ class Category extends Component {
     } = this.state;
     // 防止在第一次渲染的时候，selectCategory 对象为 undefind，导致的获取 name 报错
     const category = this.selectCategory ? this.selectCategory : {};
-    const title = (
-      <span>
-        <LinkButton onClick={this.showCategorys}>一级分类菜单</LinkButton>
-        <Icon
-          type="arrow-right"
-          style={{ display: parentName === "" ? "none" : "block" }}
-        ></Icon>
-        <span>{parentName}</span>
-      </span>
-    );
+    const title =
+      parentId === "0" ? (
+        "一级分类列表"
+      ) : (
+        <span>
+          <LinkButton onClick={this.showCategorys}>一级分类菜单</LinkButton>
+          <Icon type="arrow-right" style={{ marginRight: "5px" }}></Icon>
+          <span>{parentName}</span>
+        </span>
+      );
     const extra = (
       <Button type="primary" onClick={() => this.showAddModal()}>
         <Icon type="plus"></Icon>

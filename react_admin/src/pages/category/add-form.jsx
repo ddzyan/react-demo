@@ -42,6 +42,7 @@ class AddForm extends Component {
           {getFieldDecorator("categoryName", {
             initialValue: "",
             rules: [
+              { required: true, message: "分类名称必须输入" },
               {
                 max: 10,
                 message: "分类名称需要小于10位"
