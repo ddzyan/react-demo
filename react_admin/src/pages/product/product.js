@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import ProductAddUpdate from "./add-update";
 import ProductDetail from "./detail";
 import ProductHome from "./home";
-
+import "./product.less";
 class Product extends Component {
   state = {};
 

@@ -2,8 +2,13 @@ import React, { Component } from "react";
 import { Card, Select, Table, Input, Button, Icon, message } from "antd";
 
 import LinkButton from "../../components/link-button";
-import { getProductList, searchProductList } from "../../api";
+import {
+  getProductList,
+  searchProductList,
+  updateProductStatus
+} from "../../api";
 import { PAGE_SIZE } from "../../config/constantConfig";
+
 const Option = Select.Option;
 class ProductHome extends Component {
   state = {
@@ -12,6 +17,20 @@ class ProductHome extends Component {
     products: [],
     searchType: "productDesc",
     searchValue: ""
+  };
+
+  // 更新商品状态
+  updateProductStatus = async product => {
+    const response = await updateProductStatus(
+      product._id,
+      product.status === 1 ? 0 : 1
+    );
+    if (response && response.status === 0) {
+      message.success("更新成功");
+      this.getProducts(this.pageNum);
+    } else {
+      message.error("更新失败");
+    }
   };
 
   // 初始化表单标题
@@ -33,13 +52,20 @@ class ProductHome extends Component {
       {
         title: "状态",
         width: 100,
-        dataIndex: "status",
-        render: () => {
+        //dataIndex: "status",  如歌值为状态则无法获得商品ID
+        render: product => {
           return (
-            <div>
-              <Button type="primary">下架</Button>
-              <span>在售</span>
-            </div>
+            <span>
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.updateProductStatus(product);
+                }}
+              >
+                {product.status === 1 ? "下架" : "上架"}
+              </Button>
+              <span>{product.status === 1 ? "在售" : "停售"}</span>
+            </span>
           );
         }
       },
@@ -49,7 +75,13 @@ class ProductHome extends Component {
         render: product => {
           return (
             <div>
-              <LinkButton>详情</LinkButton>
+              <LinkButton
+                onClick={() =>
+                  this.props.history.push("/product/detail", product)
+                }
+              >
+                详情
+              </LinkButton>
               <LinkButton>修改</LinkButton>
             </div>
           );
@@ -60,7 +92,9 @@ class ProductHome extends Component {
 
   // 根据 pageNum(当前页码)) 和 pageSize(一页显示的数量) 获取表单列表
   getProducts = async current => {
-    console.log("current :", current);
+    this.setState({
+      loading: true
+    });
     // 更新显示的页码
     this.pageNum = current;
     const { searchType, searchValue } = this.state;

@@ -17,6 +17,14 @@ export const updateCategory = (categoryName, categoryId) =>
 export const getCategory = parentId =>
   ajax("/manage/category/list", { parentId }, "GET");
 
+// 根据分类ID 获取分类名称
+export const getCategoryInfo = async categoryId =>
+  ajax("/manage/category/info", { categoryId }, "GET");
+
+//对商品进行上架/下架处理
+export const updateProductStatus = async (productId, status) =>
+  ajax("/manage/product/updateStatus", { productId, status }, "POST");
+
 /**
  * 获取商品分页列表
  * @param {string} pageNum 当前页码
