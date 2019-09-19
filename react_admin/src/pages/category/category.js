@@ -8,7 +8,7 @@ import AddForm from "./add-form";
 import UpdateForm from "./update-form";
 class Category extends Component {
   state = {
-    lodding: true, //是否显示加载动画
+    loading: true, //是否显示加载动画
     selectCategory: {}, // 选择中的分类对象,用于传递给更新组件的categoryName
     categorys: [], // 一级分类列表
     subCategorys: [], // 二级分类列表
@@ -79,12 +79,12 @@ class Category extends Component {
       const categorys = result.data;
       if (Object.is(parentId, "0")) {
         this.setState({
-          lodding: false,
+          loading: false,
           categorys
         });
       } else {
         this.setState({
-          lodding: false,
+          loading: false,
           subCategorys: categorys
         });
       }
@@ -196,7 +196,7 @@ class Category extends Component {
 
   render() {
     const {
-      lodding,
+      loading,
       categorys,
       parentId,
       parentName,
@@ -258,7 +258,7 @@ class Category extends Component {
           <Table
             bordered
             pagination={{ defaultPageSize: 5, showQuickJumper: true }}
-            loading={lodding}
+            loading={loading}
             columns={this.columns}
             dataSource={parentId === "0" ? categorys : subCategorys}
             rowKey="_id"

@@ -1,13 +1,20 @@
 import React, { Component } from "react";
-import { Card, Select, Table, Input, Button, Icon } from "antd";
+import { Card, Select, Table, Input, Button, Icon, message } from "antd";
 
 import LinkButton from "../../components/link-button";
+import { getProductList, searchProductList } from "../../api";
+import { PAGE_SIZE } from "../../config/constantConfig";
 const Option = Select.Option;
 class ProductHome extends Component {
   state = {
-    product: []
+    loading: true,
+    total: 0,
+    products: [],
+    searchType: "productDesc",
+    searchValue: ""
   };
 
+  // 初始化表单标题
   initColumns = () => {
     this.columns = [
       {
@@ -51,20 +58,87 @@ class ProductHome extends Component {
     ];
   };
 
+  // 根据 pageNum(当前页码)) 和 pageSize(一页显示的数量) 获取表单列表
+  getProducts = async current => {
+    console.log("current :", current);
+    // 更新显示的页码
+    this.pageNum = current;
+    const { searchType, searchValue } = this.state;
+    let response;
+    if (searchValue.length > 0) {
+      response = await searchProductList(
+        this.pageNum,
+        PAGE_SIZE,
+        searchValue,
+        searchType
+      );
+    } else {
+      response = await getProductList(this.pageNum, PAGE_SIZE);
+    }
+
+    if (response && response.status === 0) {
+      const { list, total } = response.data;
+      this.setState({
+        loading: false,
+        products: list,
+        total
+      });
+    } else {
+      message.error("获取商品列表失败");
+    }
+  };
+
+  /**
+   * 执行异步初始化
+   * 初始化获得 商品列表 时候，需要传入当前页码，不然将为undefind
+   */
+  componentDidMount() {
+    this.getProducts(1);
+  }
+
   //执行同步初始化
   UNSAFE_componentWillMount() {
     this.initColumns();
   }
 
+  /**
+   * 保持 this.pageNum 的目的是为了在进行查询的时候，可以获取当前页码
+   * 使用 受控组件(值由react进行管理) 获取select和input的值，并且使用this,setState进行管理更新(是有必要更新到state中？因为每次更新都将刷新页面，而实际这两个值的修改界面并没有更改)
+   */
   render() {
+    console.log("页面刷新");
+    const { total, products, loading, searchType } = this.state;
     const title = (
       <div>
-        <Select defaultValue="0" style={{ width: 150 }}>
-          <Option value="0">按照关键字搜索</Option>
-          <Option value="1">按照商品名称搜索</Option>
+        <Select
+          defaultValue={searchType}
+          style={{ width: 150 }}
+          onChange={value => {
+            this.setState({
+              searchType: value
+            });
+          }}
+        >
+          <Option value="productDesc">按照描述搜索</Option>
+          <Option value="productName">按照名称搜索</Option>
         </Select>
-        <Input style={{ width: 150, margin: 10 }} placeholder="查询内容" />
-        <Button type="primary">查询</Button>
+        <Input
+          style={{ width: 150, margin: 10 }}
+          placeholder="查询内容"
+          onChange={({ target: { value } }) =>
+            this.setState({
+              searchValue: value.trim()
+            })
+          }
+        />
+        <Button
+          type="primary"
+          onClick={() => {
+            this.getProducts(1);
+          }}
+        >
+          查询
+        </Button>
       </div>
     );
     const extra = (
@@ -74,43 +148,21 @@ class ProductHome extends Component {
       </Button>
     );
 
-    const dataSource = [
-      {
-        status: 1,
-        imgs: ["image-1559402396338.jpg"],
-        _id: "5ca9e05db49ef916541160cd",
-        name: "联想ThinkPad 翼4809",
-        desc: "年度重量级新品，X390、T490全新登场 更加轻薄机身设计9",
-        price: 65999,
-        pCategoryId: "5ca9d6c0b49ef916541160bb",
-        categoryId: "5ca9db9fb49ef916541160cc",
-        detail:
-          '<p><span style="color: rgb(228,57,60);background-color: rgb(255,255,255);font-size: 12px;">想你所需，超你所想！精致外观，轻薄便携带光驱，内置正版office杜绝盗版死机，全国联保两年！</span> 222</p>\n<p><span style="color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 16px;">联想（Lenovo）扬天V110 15.6英寸家用轻薄便携商务办公手提笔记本电脑 定制【E2-9010/4G/128G固态】 2G独显 内置</span></p>\n<p><span style="color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 16px;">99999</span></p>\n',
-        __v: 0
-      },
-      {
-        status: 1,
-        imgs: ["image-1559402448049.jpg", "image-1559402450480.jpg"],
-        _id: "5ca9e414b49ef916541160ce",
-        name: "华硕(ASUS) 飞行堡垒",
-        desc:
-          "15.6英寸窄边框游戏笔记本电脑(i7-8750H 8G 256GSSD+1T GTX1050Ti 4G IPS)",
-        price: 6799,
-        pCategoryId: "5ca9d6c0b49ef916541160bb",
-        categoryId: "5ca9db8ab49ef916541160cb",
-        detail:
-          '<p><span style="color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 16px;">华硕(ASUS) 飞行堡垒6 15.6英寸窄边框游戏笔记本电脑(i7-8750H 8G 256GSSD+1T GTX1050Ti 4G IPS)火陨红黑</span>&nbsp;</p>\n<p><span style="color: rgb(228,57,60);background-color: rgb(255,255,255);font-size: 12px;">【4.6-4.7号华硕集体放价，大牌够品质！】1T+256G高速存储组合！超窄边框视野无阻，强劲散热一键启动！</span>&nbsp;</p>\n',
-        __v: 0
-      }
-    ];
-
     return (
       <Card title={title} extra={extra}>
         <Table
+          loading={loading}
           bordered={true}
           rowKey="_id"
-          dataSource={dataSource}
+          dataSource={products}
           columns={this.columns}
+          pagination={{
+            current: this.pageNum,
+            defaultPageSize: PAGE_SIZE,
+            total,
+            onChange: this.getProducts,
+            showQuickJumper: true
+          }}
         ></Table>
       </Card>
     );

@@ -17,6 +17,22 @@ export const updateCategory = (categoryName, categoryId) =>
 export const getCategory = parentId =>
   ajax("/manage/category/list", { parentId }, "GET");
 
+/**
+ * 获取商品分页列表
+ * @param {string} pageNum 当前页码
+ * @param {string} pageSize  一页显示数量
+ */
+export const getProductList = (pageNum, pageSize) =>
+  ajax("/manage/product/list", { pageNum, pageSize }, "GET");
+
+// 优化个查询条件接口
+export const searchProductList = (pageNum, pageSize, searchName, searchType) =>
+  ajax(
+    "/manage/product/search",
+    { pageNum, pageSize, [searchType]: searchName },
+    "GET"
+  );
+
 //使用 jsonp 发送获取天气连接，jsonp 可以解决浏览器端 GET 请求跨域问题
 export const getWeather = city => {
   return new Promise((resolve, reject) => {
