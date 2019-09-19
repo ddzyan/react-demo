@@ -83,10 +83,10 @@ yarn start
 
 #### 商品界面
 
-- 完成路由搭建，并且使用精准匹配
+- 完成路由搭建，由于路由匹配规则为逐层匹配，所以部分路由需要设置精准匹配 extra 属性
 - 完成 商品主界面 静态页面搭建
 - 配置 table 的 pagination 属性，实现异步加载商品分页列表，封装 根据 pageNum(页码) 和 pageSize(一页要显示的数量) 获取商品分页信息
 - 搭建静态 详细信息页面
-- 动态显示 详细信息页面，在使用 this.props.history.push(path,[state]) 传递参数
+- 动态显示 详细信息页面，在使用 this.props.history.push(path,[state]) 传递参数，只支持 BrowserRouter 组件内的路由
 - 根据 一级分类 ID 和 二级分类 ID 异步获取分类名称，动态显示
 - 完成 上架/下架 按钮功能，通过发送 api 接口，更新商品状态，成功后刷新页面

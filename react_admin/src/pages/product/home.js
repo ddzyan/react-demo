@@ -64,7 +64,7 @@ class ProductHome extends Component {
               >
                 {product.status === 1 ? "下架" : "上架"}
               </Button>
-              <span>{product.status === 1 ? "在售" : "停售"}</span>
+              <span>{product.status === 1 ? "在售" : "已下架"}</span>
             </span>
           );
         }

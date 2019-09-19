@@ -13,21 +13,28 @@ class ProductDetail extends Component {
   /**
    * 异步初始化
    * 使用 并发 一起获取分类名称（未处理失败情况）
+   * 如果二级分类为空则只获取一个
    */
   async componentDidMount() {
     const { categoryId, pCategoryId } = this.props.location.state;
-    const responses = await Promise.all([
-      getCategoryInfo(categoryId),
-      getCategoryInfo(pCategoryId)
-    ]);
+    if (categoryId === "0") {
+      const response = await getCategoryInfo(categoryId);
+      const categoryName = response.data.name;
+      this.setState({ categoryName });
+    } else {
+      const responses = await Promise.all([
+        getCategoryInfo(categoryId),
+        getCategoryInfo(pCategoryId)
+      ]);
 
-    const categoryName = responses[0].data.name;
-    const subCategoryName = responses[1].data.name;
+      const categoryName = responses[0].data.name;
+      const subCategoryName = responses[1].data.name;
 
-    this.setState({
-      categoryName,
-      subCategoryName
-    });
+      this.setState({
+        categoryName,
+        subCategoryName
+      });
+    }
   }
 
   render() {
