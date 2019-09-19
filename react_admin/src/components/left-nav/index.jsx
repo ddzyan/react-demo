@@ -19,7 +19,9 @@ class LeftNav extends Component {
     return menuList.reduce((pre, item) => {
       const { title, key, icon, children } = item;
       if (children) {
-        const citem = children.find(citem => citem.key === pathname);
+        const citem = children.find(
+          citem => pathname.indexOf(citem.key) !== -1
+        );
         if (citem) {
           this.openKey = item.key;
         }
@@ -66,8 +68,12 @@ class LeftNav extends Component {
    * defaultOpenKeys 设置打开的二级菜单栏，值为一级菜单栏
    */
   render() {
-    const { pathname: path } = this.props.location;
+    let { pathname } = this.props.location;
     const openKey = this.openKey;
+    if (pathname.indexOf("/product") !== -1) {
+      pathname = "/product";
+    }
+
     return (
       <div className="left-nav">
         <Link to="/" className="left-nav-header">
@@ -77,7 +83,7 @@ class LeftNav extends Component {
         <Menu
           theme="dark"
           mode="inline"
-          selectedKeys={[path]}
+          selectedKeys={[pathname]}
           defaultOpenKeys={[openKey]}
         >
           {this.menuNodes}

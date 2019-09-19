@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Card, Icon, List, Button } from "antd";
+import { Redirect } from "react-router-dom";
 
 import { BASE_IMG_URL } from "../../config/constantConfig";
 import { getCategoryInfo } from "../../api";
@@ -16,6 +17,9 @@ class ProductDetail extends Component {
    * 如果二级分类为空则只获取一个
    */
   async componentDidMount() {
+    if (!this.props.location.state) {
+      return <Redirect to="/product" />;
+    }
     const { categoryId, pCategoryId } = this.props.location.state;
     if (categoryId === "0") {
       const response = await getCategoryInfo(categoryId);
@@ -38,6 +42,9 @@ class ProductDetail extends Component {
   }
 
   render() {
+    if (!this.props.location.state) {
+      return <Redirect to="/product" />;
+    }
     const { name, desc, detail, imgs, price } = this.props.location.state;
 
     const { categoryName, subCategoryName } = this.state;

@@ -13,7 +13,8 @@ export const addCategory = (categoryName, parentId) =>
 // 更新类别
 export const updateCategory = (categoryName, categoryId) =>
   ajax("/manage/category/update", { categoryName, categoryId }, "POST");
-// 获取类别
+
+// 获取一级或某个二级分类列表
 export const getCategory = parentId =>
   ajax("/manage/category/list", { parentId }, "GET");
 
