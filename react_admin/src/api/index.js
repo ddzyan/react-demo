@@ -42,6 +42,9 @@ export const searchProductList = (pageNum, pageSize, searchName, searchType) =>
     "GET"
   );
 
+// 删除图片
+export const deleteImg = name => ajax("/manage/img/delete", { name }, "POST");
+
 //使用 jsonp 发送获取天气连接，jsonp 可以解决浏览器端 GET 请求跨域问题
 export const getWeather = city => {
   return new Promise((resolve, reject) => {

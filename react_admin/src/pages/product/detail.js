@@ -5,6 +5,8 @@ import { Redirect } from "react-router-dom";
 import { BASE_IMG_URL } from "../../config/constantConfig";
 import { getCategoryInfo } from "../../api";
 const Item = List.Item;
+
+// 商品详情
 class ProductDetail extends Component {
   state = {
     categoryName: "",

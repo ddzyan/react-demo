@@ -1,12 +1,19 @@
 import React, { Component } from "react";
 import { Card, Input, Button, Icon, Form, message, Cascader } from "antd";
 
+import PicturesWall from "./pictures-wall";
 import LinkButton from "../../components/link-button";
 import { getCategory } from "../../api";
 const { Item } = Form;
 const { TextArea } = Input;
 
+// 商品的添加和更新
 class ProductAddUpdate extends Component {
+  constructor(props) {
+    super(props);
+    this.myRef = React.createRef();
+  }
+
   state = {
     options: []
   };
@@ -21,7 +28,6 @@ class ProductAddUpdate extends Component {
     const { product, isUpdate } = this;
 
     if (isUpdate && product.pCategoryId !== "0") {
-      debugger;
       const childOptions = await this.getCategory(product.pCategoryId);
       const targetOption = options.find(
         item => item.value === product.pCategoryId
@@ -78,6 +84,9 @@ class ProductAddUpdate extends Component {
   submit = () => {
     this.props.form.validateFields((error, value) => {
       if (!error) {
+        const pw = this.myRef.current;
+        console.log("pw :", pw.getFileList());
+        console.log("value :", value);
       } else {
         message.error("验证失败");
       }
@@ -112,10 +121,11 @@ class ProductAddUpdate extends Component {
     this.isUpdate = !!product;
     this.product = product || {};
   }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const { product, isUpdate } = this;
-    const { pCategoryId, categoryId, name, desc, price } = product;
+    const { pCategoryId, categoryId, name, desc, price, imgs } = product;
     const categoryIds = [];
     if (isUpdate) {
       categoryIds.push(pCategoryId);
@@ -182,10 +192,7 @@ class ProductAddUpdate extends Component {
           <Item label="商品类别">
             {getFieldDecorator("categorys", {
               initialValue: categoryIds,
-              rules: [
-                { required: true, message: "商品价格不能为空" },
-                { validator: this.validator }
-              ]
+              rules: [{ required: true, message: "商品类别不能为空" }]
             })(
               <Cascader
                 placeholder="请选择商品分类"
@@ -195,6 +202,9 @@ class ProductAddUpdate extends Component {
                 } /**当选择某个选项，加载下一列的监听回调 */
               />
             )}
+          </Item>
+          <Item label="图片上传">
+            <PicturesWall imgs={imgs} ref={this.myRef} />
           </Item>
           <Button type="primary" onClick={this.submit}>
             提交
@@ -208,3 +218,8 @@ class ProductAddUpdate extends Component {
 const WrapProductAddUpdate = Form.create()(ProductAddUpdate);
 
 export default WrapProductAddUpdate;
+
+/**
+ * 子组件调用父组件方法：父组件将方法以函数的 props 方式传递给子组件调用
+ * 父组件调用子组件方法，可以通过 ref 获取到子组件的对象，从而获得对象属性
+ */
