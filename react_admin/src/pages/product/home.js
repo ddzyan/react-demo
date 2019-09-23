@@ -146,7 +146,6 @@ class ProductHome extends Component {
    * 使用 受控组件(值由react进行管理) 获取select和input的值，并且使用this,setState进行管理更新(是有必要更新到state中？因为每次更新都将刷新页面，而实际这两个值的修改界面并没有更改)
    */
   render() {
-    console.log("页面刷新");
     const { total, products, loading, searchType } = this.state;
     const title = (
       <div>
@@ -182,7 +181,10 @@ class ProductHome extends Component {
       </div>
     );
     const extra = (
-      <Button type="primary">
+      <Button
+        type="primary"
+        onClick={() => this.props.history.push("/product/add")}
+      >
         <Icon type="plus" />
         添加
       </Button>

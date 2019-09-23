@@ -23,7 +23,7 @@ class ProductDetail extends Component {
       return <Redirect to="/product" />;
     }
     const { categoryId, pCategoryId } = this.props.location.state;
-    if (categoryId === "0") {
+    if (pCategoryId === "0") {
       const response = await getCategoryInfo(categoryId);
       const categoryName = response.data.name;
       this.setState({ categoryName });

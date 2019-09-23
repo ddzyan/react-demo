@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { Card, Input, Button, Icon, Form, message, Cascader } from "antd";
 
 import PicturesWall from "./pictures-wall";
+import RichTextEditor from "./rich-text-editor";
 import LinkButton from "../../components/link-button";
-import { getCategory } from "../../api";
+import { getCategory, AddOrUpdateProduct } from "../../api";
 const { Item } = Form;
 const { TextArea } = Input;
 
@@ -11,7 +12,8 @@ const { TextArea } = Input;
 class ProductAddUpdate extends Component {
   constructor(props) {
     super(props);
-    this.myRef = React.createRef();
+    this.pw = React.createRef();
+    this.editor = React.createRef();
   }
 
   state = {
@@ -82,11 +84,42 @@ class ProductAddUpdate extends Component {
 
   //提交表单
   submit = () => {
-    this.props.form.validateFields((error, value) => {
+    console.log("submit ");
+    this.props.form.validateFields(async (error, value) => {
       if (!error) {
-        const pw = this.myRef.current;
-        console.log("pw :", pw.getFileList());
-        console.log("value :", value);
+        const pw = this.pw.current;
+        const editor = this.editor.current;
+        const {
+          categorys: [categoryId, pCategoryId = "0"],
+          name,
+          desc,
+          price
+        } = value;
+
+        const imgs = pw.getFileList();
+        const detail = editor.getDetail();
+
+        let product = {
+          categoryId,
+          pCategoryId,
+          name,
+          desc,
+          price,
+          imgs,
+          detail
+        };
+        // 判断是更新还是添加  _id
+        console.log("product :", this.product);
+        if (this.isUpdate) {
+          product._id = this.product._id;
+        }
+        const response = await AddOrUpdateProduct(product);
+        if (response.status === 0) {
+          message.success("操作成功");
+          this.props.history.push("/product");
+        } else {
+          message.error("操作失败");
+        }
       } else {
         message.error("验证失败");
       }
@@ -125,11 +158,21 @@ class ProductAddUpdate extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { product, isUpdate } = this;
-    const { pCategoryId, categoryId, name, desc, price, imgs } = product;
+    const {
+      pCategoryId,
+      categoryId,
+      name,
+      desc,
+      price,
+      imgs,
+      detail
+    } = product;
     const categoryIds = [];
     if (isUpdate) {
-      categoryIds.push(pCategoryId);
       if (pCategoryId !== "0") {
+        categoryIds.push(pCategoryId);
+        categoryIds.push(categoryId);
+      } else {
         categoryIds.push(categoryId);
       }
     }
@@ -204,7 +247,15 @@ class ProductAddUpdate extends Component {
             )}
           </Item>
           <Item label="图片上传">
-            <PicturesWall imgs={imgs} ref={this.myRef} />
+            <PicturesWall imgs={imgs} ref={this.pw} />
+          </Item>
+
+          <Item
+            label="商品详情"
+            labelCol={{ span: 2 }}
+            wrapperCol={{ span: 20 }}
+          >
+            <RichTextEditor detail={detail} ref={this.editor} />
           </Item>
           <Button type="primary" onClick={this.submit}>
             提交

@@ -14,51 +14,35 @@ function getBase64(file) {
 }
 
 export default class PicturesWall extends React.Component {
-  state = {
-    previewVisible: false,
-    previewImage: "",
-    fileList: []
-  };
-
   static propTypes = {
-    imgs: PropTypes.array.isRequired
+    imgs: PropTypes.array
   };
 
-  /*  constructor(props) {
+  /**
+   * 初始化 state 属性使用构造函数
+   * 使用同步方式更新state 属性,使用 UNSAFE_componentWillMount
+   * 使用异步方式更新 state 属性，使用 componentDidMount
+   */
+  constructor(props) {
     super(props);
     const { imgs } = this.props;
+    const fileList = [];
     if (imgs && imgs.length > 0) {
-      console.log("imgs :", imgs);
-      const fileList = imgs.map((name, index) => ({
-        uid: -index,
-        name,
-        status: "done",
-        url: `${BASE_IMG_URL}${name}`
-      }));
-      // 初始化状态
-      this.state = {
-        previewVisible: false, // 标识是否显示大图预览Modal
-        previewImage: "", // 大图的url
-        fileList // 所有已上传图片的数组
-      };
-    }
-  } */
-
-  // 初始化同步数据
-  UNSAFE_componentWillMount() {
-    const { imgs } = this.props;
-    if (imgs && imgs.length > 0) {
-      const fileList = imgs.map((name, index) => ({
-        uid: -index,
-        name,
-        status: "done",
-        url: `${BASE_IMG_URL}${name}`
-      }));
-      // 初始化状态
-      this.setState({
-        fileList // 所有已上传图片的数组
+      imgs.forEach((name, index) => {
+        fileList.push({
+          uid: -index,
+          name,
+          status: "done",
+          url: `${BASE_IMG_URL}${name}`
+        });
       });
     }
+    // 初始化状态
+    this.state = {
+      previewVisible: false, // 标识是否显示大图预览Modal
+      previewImage: "", // 大图的url
+      fileList // 所有已上传图片的数组
+    };
   }
 
   // 预览modal取消事件
@@ -101,8 +85,7 @@ export default class PicturesWall extends React.Component {
    * 将 fileList 传递给父组件，用于获取文件名称
    */
   getFileList = () => {
-    const { fileList } = this.state;
-    return fileList;
+    return this.state.fileList.map(file => file.name);
   };
 
   render() {
