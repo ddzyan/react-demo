@@ -42,6 +42,10 @@ export const searchProductList = (pageNum, pageSize, searchName, searchType) =>
     "GET"
   );
 
+//删除商品
+export const delProduct = _id =>
+  ajax("/manage/product/delete", { _id }, "POST");
+
 // 删除图片
 export const deleteImg = name => ajax("/manage/img/delete", { name }, "POST");
 

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Card, Select, Table, Input, Button, Icon, message } from "antd";
 
+import { delProduct } from "../../api";
 import LinkButton from "../../components/link-button";
 import {
   getProductList,
@@ -89,11 +90,26 @@ class ProductHome extends Component {
               >
                 修改
               </LinkButton>
+
+              <LinkButton onClick={() => this.delProduct(product._id)}>
+                删除
+              </LinkButton>
             </div>
           );
         }
       }
     ];
+  };
+
+  // 删除商品
+  delProduct = async _id => {
+    const response = await delProduct(_id);
+    if (response.status === 0) {
+      message.success("删除成功");
+      this.getProducts(1);
+    } else {
+      message.error("删除失败");
+    }
   };
 
   // 根据 pageNum(当前页码)) 和 pageSize(一页显示的数量) 获取表单列表

@@ -70,7 +70,7 @@ class LeftNav extends Component {
   render() {
     let { pathname } = this.props.location;
     const openKey = this.openKey;
-    if (pathname.indexOf("/product") !== -1) {
+    if (pathname.indexOf("/product") === 0) {
       pathname = "/product";
     }
 

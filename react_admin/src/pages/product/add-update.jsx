@@ -84,7 +84,6 @@ class ProductAddUpdate extends Component {
 
   //提交表单
   submit = () => {
-    console.log("submit ");
     this.props.form.validateFields(async (error, value) => {
       if (!error) {
         const pw = this.pw.current;
@@ -108,17 +107,16 @@ class ProductAddUpdate extends Component {
           imgs,
           detail
         };
-        // 判断是更新还是添加  _id
-        console.log("product :", this.product);
+        // 判断是更新还是添加
         if (this.isUpdate) {
           product._id = this.product._id;
         }
         const response = await AddOrUpdateProduct(product);
         if (response.status === 0) {
-          message.success("操作成功");
-          this.props.history.push("/product");
+          message.success(`${this.isUpdate ? "更新" : "添加"}商品成功`);
+          this.props.history.goBack();
         } else {
-          message.error("操作失败");
+          message.success(`${this.isUpdate ? "更新" : "添加"}商品失败`);
         }
       } else {
         message.error("验证失败");
