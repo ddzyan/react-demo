@@ -10,15 +10,15 @@ const { TextArea } = Input;
 
 // 商品的添加和更新
 class ProductAddUpdate extends Component {
+  state = {
+    options: []
+  };
+
   constructor(props) {
     super(props);
     this.pw = React.createRef();
     this.editor = React.createRef();
   }
-
-  state = {
-    options: []
-  };
 
   /**
    * 初始化分类级联菜单
@@ -27,13 +27,19 @@ class ProductAddUpdate extends Component {
    * 更新 state 用于默认选中 一级/二级分类
    */
   initOptions = async options => {
-    const { product, isUpdate } = this;
+    const {
+      product: { pCategoryId },
+      isUpdate
+    } = this;
+    debugger;
+    // 更新信息界面，判断二级分类 pCategoryId 是否0
+    if (isUpdate && pCategoryId !== "0") {
+      // 获取产品二级分类ID的列表信息
 
-    if (isUpdate && product.pCategoryId !== "0") {
-      const childOptions = await this.getCategory(product.pCategoryId);
-      const targetOption = options.find(
-        item => item.value === product.pCategoryId
-      );
+      const childOptions = await this.getCategory(pCategoryId);
+
+      // 找出当前商品匹配的一级菜单
+      const targetOption = options.find(option => option.value === pCategoryId);
       targetOption.children = childOptions;
     }
     this.setState({
@@ -42,9 +48,10 @@ class ProductAddUpdate extends Component {
   };
 
   /**
-   * 获取一级分类列表
+   * 获取分类列表
    */
   getCategory = async (parentId = 0) => {
+    // 获取分类列表
     const response = await getCategory(parentId);
     if (response && response.status === 0) {
       const options = response.data.map(({ name, _id }) => ({
@@ -53,8 +60,10 @@ class ProductAddUpdate extends Component {
         isLeaf: parentId === 0 ? false : true
       }));
       if (parentId === 0) {
+        // 初始化一级分类菜单
         this.initOptions(options);
       } else {
+        // 二级列表
         return options;
       }
     } else {
@@ -86,15 +95,18 @@ class ProductAddUpdate extends Component {
   submit = () => {
     this.props.form.validateFields(async (error, value) => {
       if (!error) {
+        // 获得上传的图片名称数组
         const pw = this.pw.current;
+        // 获得输入的富文本内容
         const editor = this.editor.current;
-        const {
-          categorys: [categoryId, pCategoryId = "0"],
-          name,
-          desc,
-          price
-        } = value;
-
+        const { categorys, name, desc, price } = value;
+        let categoryId, pCategoryId;
+        if (categorys.length === 2) {
+          categoryId = categorys[1];
+          pCategoryId = categorys[0];
+        } else {
+          pCategoryId = categorys[0];
+        }
         const imgs = pw.getFileList();
         const detail = editor.getDetail();
 
