@@ -221,7 +221,7 @@ class ProductHome extends Component {
             onChange: this.getProducts,
             showQuickJumper: true
           }}
-        ></Table>
+        />
       </Card>
     );
   }

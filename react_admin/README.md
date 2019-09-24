@@ -103,3 +103,6 @@ yarn start
 #### 角色管理界面
 
 - 静态页面搭建,设置 antd 组件 Table 组件中 rowSelection 实现单选按钮 radio ，selectedRowKeys 实现选中 ，onRow 实现行选中效果
+- 实现 异步动态加载 用户数据
+- 添加角色组件创建，并且完成功能
+- 使用 antd 的 tree 组件 ，完成 更新角色权限功能
