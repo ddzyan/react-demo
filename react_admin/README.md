@@ -106,3 +106,14 @@ yarn start
 - 实现 异步动态加载 用户数据
 - 添加角色组件创建，并且完成功能
 - 使用 antd 的 tree 组件 ，完成 更新角色权限功能
+
+#### 优化组件渲染
+
+- 使用 PureComponent 优化组件渲染
+- 重写 Component 组件 shouldComponentUpdate 事件，如果新/旧的 props 或者 state 没有变化，就不执行 render()
+- 优化角色管理中 auth-form 组件在父组件执行刷新时，即使子组件没有 state/props 的变化，也会执行 render()的问题
+
+#### 用户管理界面
+
+- 完成用户管理所有功能
+- 存在 BUG：即使用户没有修改任何内容，也会发送修改请求

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { Tree, Form, Input } from "antd";
 
@@ -6,8 +6,13 @@ import menuList from "../../config/memuConfig";
 const { TreeNode } = Tree;
 const { Item } = Form;
 
-// 更新权限组件
-class AuthForm extends Component {
+/**
+ * 更新权限组件
+ * 使用 PureComponent
+ * 避免 由于父组件执行 render ，即使子组件没有state/props的更新也需要进行render 的bug
+ * 优化渲染性能
+ */
+class AuthForm extends PureComponent {
   static propTypes = {
     role: PropTypes.object.isRequired
   };
@@ -68,6 +73,7 @@ class AuthForm extends Component {
    *
    */
   render() {
+    console.log("auth-form render()");
     const { role } = this.props;
     const formItemLayout = {
       labelCol: { span: 4 }, // 左侧label的宽度

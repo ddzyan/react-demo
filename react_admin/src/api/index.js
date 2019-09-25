@@ -77,6 +77,17 @@ export const addRole = roleName =>
 export const updateRole = ({ _id, menus, auth_time, auth_name }) =>
   ajax("/manage/role/update", { _id, menus, auth_time, auth_name }, "POST");
 
+// 获取用户列表
+export const getUserList = () => ajax("/manage/user/list", {}, "GET");
+
+// 添加/修改用户
+export const addOrUpdateUser = user =>
+  ajax(`/manage/user/${user._id ? "update" : "add"}`, { ...user }, "POST");
+
+// 删除用户
+export const deleteUser = userId =>
+  ajax("/manage/user/delete", { userId }, "POST");
+
 //使用 jsonp 发送获取天气连接，jsonp 可以解决浏览器端 GET 请求跨域问题
 export const getWeather = city => {
   return new Promise((resolve, reject) => {

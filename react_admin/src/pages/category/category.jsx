@@ -73,7 +73,6 @@ class Category extends Component {
   // 获取一级/二级分类列表
   getCategorys = async parentId => {
     parentId = parentId || this.state.parentId;
-    console.log("刷新分类列表", parentId);
     const result = await getCategory(parentId);
     if (result && result.status === 0) {
       const categorys = result.data;

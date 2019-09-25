@@ -31,7 +31,6 @@ class ProductAddUpdate extends Component {
       product: { pCategoryId },
       isUpdate
     } = this;
-    debugger;
     // 更新信息界面，判断二级分类 pCategoryId 是否0
     if (isUpdate && pCategoryId !== "0") {
       // 获取产品二级分类ID的列表信息
@@ -42,6 +41,7 @@ class ProductAddUpdate extends Component {
       const targetOption = options.find(option => option.value === pCategoryId);
       targetOption.children = childOptions;
     }
+    // options 为一个新的对象，此是可以直接赋值
     this.setState({
       options
     });
@@ -71,9 +71,7 @@ class ProductAddUpdate extends Component {
     }
   };
 
-  /**
-   * 动态加载二级分类列表
-   */
+  //当选择某个选项，加载下一列的监听回调
   loadData = async selectedOptions => {
     const targetOption = selectedOptions[0]; //获得选择的项
     targetOption.loading = true; // 加载动画
@@ -85,7 +83,7 @@ class ProductAddUpdate extends Component {
     } else {
       targetOption.isLeaf = true;
     }
-    // 更新状态需要放到最后，保证loading动画关闭
+    // 如果此时直接使用this.state.options ，而不是用扩展运算符，则option无法进行重写渲染
     this.setState({
       options: [...this.state.options]
     });
@@ -166,6 +164,11 @@ class ProductAddUpdate extends Component {
   }
 
   render() {
+    /**
+     * 初始化执行一次渲染
+     * 异步获取到分类列表时，执行第二次渲染
+     */
+    console.log("add-update render");
     const { getFieldDecorator } = this.props.form;
     const { product, isUpdate } = this;
     const {
@@ -250,9 +253,7 @@ class ProductAddUpdate extends Component {
               <Cascader
                 placeholder="请选择商品分类"
                 options={this.state.options} /**显示需要显示的数据数组 */
-                loadData={
-                  this.loadData
-                } /**当选择某个选项，加载下一列的监听回调 */
+                loadData={this.loadData}
               />
             )}
           </Item>
