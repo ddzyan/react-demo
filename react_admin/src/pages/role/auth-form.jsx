@@ -37,7 +37,6 @@ class AuthForm extends PureComponent {
 
   onCheck = (checkedKeys, info) => {
     this.setState({ checkedKeys });
-    console.log("onCheck", checkedKeys, info);
   };
 
   getTreeNodes = menuList => {

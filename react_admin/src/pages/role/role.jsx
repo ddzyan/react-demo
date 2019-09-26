@@ -5,6 +5,7 @@ import { PAGE_SIZE } from "../../config/constantConfig";
 import { getRoleList, addRole, updateRole } from "../../api";
 import { formateDate } from "../../utils/dateUtils";
 import memoryUtils from "../../utils/memoryUtils";
+import storageUtils from "../../utils/storageUtils";
 import AddForm from "./add-form";
 import AuthForm from "./auth-form";
 class Role extends Component {
@@ -102,12 +103,20 @@ class Role extends Component {
 
     const response = await updateRole(role);
     if (response && response.status === 0) {
-      message.success("更新角色权限成功");
-      this.setState({
-        roles: [...this.state.roles]
-      });
-      // 需要更新 roles 列表
-      this.onCancel();
+      if (role._id === memoryUtils.user.role_id) {
+        // 如果修改的权限是用户当前的权限需要重新登陆，刷新菜单栏
+        message.success("当前用户角色权限成功,请重新登陆");
+        this.props.history.replace("/login");
+        memoryUtils.user = {};
+        storageUtils.removeUser();
+      } else {
+        message.success("更新角色权限成功");
+        this.setState({
+          roles: [...this.state.roles]
+        });
+        // 需要更新 roles 列表
+        this.onCancel();
+      }
     } else {
       message.error("更新角色权限失败");
     }

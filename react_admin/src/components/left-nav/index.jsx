@@ -5,10 +5,39 @@ import { Link, withRouter } from "react-router-dom";
 import "./index.less";
 import logo from "../../assets/images/logo.png";
 import menuList from "../../config/memuConfig";
-
+import memoryUtils from "../../utils/memoryUtils";
 const { SubMenu } = Menu;
 class LeftNav extends Component {
   state = {};
+
+  /*
+  判断当前登陆用户对item是否有权限
+   */
+  hasAuth = item => {
+    // 获取当前用户的
+    const {
+      username,
+      role: { menus }
+    } = memoryUtils.user;
+    /**
+     * admin 用户显示所有
+     * isPublic 为公用菜单，向所有人开放
+     * 用户权限数组中不存在不显示
+     */
+    if (
+      username === "admin" ||
+      item.isPublic ||
+      menus.indexOf(item.key) !== -1
+    ) {
+      return true;
+    } else if (item.children) {
+      // 如果当前用户有此item的某个子item的权限
+      return !!item.children.find(item => menus.indexOf(item.key) !== -1);
+    } else {
+      return false;
+    }
+  };
+
   /**
    * 采用 array reduce遍历方法，实现累计往 pre 数组中添加新下内容
    * 在遍历的过程中，判断二级菜单栏的 key 是否与当前路径相同
@@ -17,39 +46,41 @@ class LeftNav extends Component {
   getMenuNodes = menuList => {
     const { pathname } = this.props.location;
     return menuList.reduce((pre, item) => {
-      const { title, key, icon, children } = item;
-      if (children) {
-        const citem = children.find(
-          citem => pathname.indexOf(citem.key) !== -1
-        );
-        if (citem) {
-          this.openKey = item.key;
-        }
+      // 判断当前用户是否有这个权限使用菜单
+      if (this.hasAuth(item)) {
+        const { title, key, icon, children } = item;
+        if (children) {
+          const citem = children.find(
+            citem => pathname.indexOf(citem.key) !== -1
+          );
+          if (citem) {
+            this.openKey = item.key;
+          }
 
-        pre.push(
-          <SubMenu
-            key={key}
-            title={
-              <span>
+          pre.push(
+            <SubMenu
+              key={key}
+              title={
+                <span>
+                  <Icon type={icon} />
+                  <span>{title}</span>
+                </span>
+              }
+            >
+              {this.getMenuNodes(children)}
+            </SubMenu>
+          );
+        } else {
+          pre.push(
+            <Menu.Item key={key}>
+              <Link to={key}>
                 <Icon type={icon} />
                 <span>{title}</span>
-              </span>
-            }
-          >
-            {this.getMenuNodes(children)}
-          </SubMenu>
-        );
-      } else {
-        pre.push(
-          <Menu.Item key={key}>
-            <Link to={key}>
-              <Icon type={icon} />
-              <span>{title}</span>
-            </Link>
-          </Menu.Item>
-        );
+              </Link>
+            </Menu.Item>
+          );
+        }
       }
-
       return pre;
     }, []);
   };
