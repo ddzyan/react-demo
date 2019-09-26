@@ -109,7 +109,7 @@ class Header extends Component {
     return (
       <div className="header">
         <div className="header-top">
-          <span>欢迎,admin</span>
+          <span>欢迎,{memoryUtils.user.username}</span>
           <LinkButton onClick={this.loginOut}>退出</LinkButton>
         </div>
         <div className="header-bottom">

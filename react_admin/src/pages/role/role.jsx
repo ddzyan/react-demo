@@ -187,7 +187,7 @@ class Role extends Component {
     );
 
     return (
-      <div>
+      <Card title={title}>
         <Modal
           title="添加角色"
           visible={this.state.modalVisible === 1}
@@ -209,22 +209,23 @@ class Role extends Component {
         >
           <AuthForm role={role} ref={this.authForm} />
         </Modal>
-
-        <Card title={title}>
-          <Table
-            pagination={{ pageSize: PAGE_SIZE }}
-            dataSource={roles}
-            rowKey="_id"
-            columns={this.columns}
-            bordered={true}
-            rowSelection={{
-              type: "radio",
-              selectedRowKeys: [role._id]
-            }}
-            onRow={this.onRow}
-          />
-        </Card>
-      </div>
+        <Table
+          pagination={{ pageSize: PAGE_SIZE }}
+          dataSource={roles}
+          rowKey="_id"
+          columns={this.columns}
+          bordered={true}
+          rowSelection={{
+            type: "radio",
+            selectedRowKeys: [role._id],
+            onSelect: record =>
+              this.setState({
+                role: record
+              })
+          }}
+          onRow={this.onRow}
+        />
+      </Card>
     );
   }
 }
