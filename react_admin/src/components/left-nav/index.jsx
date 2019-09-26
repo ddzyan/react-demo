@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { Menu, Icon } from "antd";
 import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
 import "./index.less";
+import { setHeadTitle } from "../../redux/actions";
 import logo from "../../assets/images/logo.png";
 import menuList from "../../config/memuConfig";
 import memoryUtils from "../../utils/memoryUtils";
@@ -71,9 +73,15 @@ class LeftNav extends Component {
             </SubMenu>
           );
         } else {
+          if (pathname === item.key || pathname.indexOf(item.key) !== -1) {
+            this.props.setHeadTitle(item.title);
+          }
           pre.push(
             <Menu.Item key={key}>
-              <Link to={key}>
+              <Link
+                to={key}
+                onClick={() => this.props.setHeadTitle(item.title)}
+              >
                 <Icon type={icon} />
                 <span>{title}</span>
               </Link>
@@ -128,7 +136,14 @@ class LeftNav extends Component {
  * withRouter 高阶组件
  * 包装非路由组件，传递 history/location/mathc属性
  *
- * 非路由组件:不是用过router 跳转的组件
+ * 非路由组件:不是用过 router 跳转的组件
+ *
+ * connect 高阶组件
+ * 将state 一般属性传递给 UI组件的props属性
+ * 将state 函数属性传递给UI组件的props属性
  */
 
-export default withRouter(LeftNav);
+export default connect(
+  state => ({}),
+  { setHeadTitle }
+)(withRouter(LeftNav));

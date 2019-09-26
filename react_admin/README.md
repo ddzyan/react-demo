@@ -135,3 +135,8 @@ yarn start
 #### 远程分支合并
 
 1. 远程分支合并，本地拉取最新代码
+
+#### redux 管理多组件共享状态
+
+- 管理 header 中的 title,修改 left-nav 组件加载菜单时候，设置 redux 内的 headTitle.修改 header 中的 title 取自 redux
+- 解决登陆时，headTitle 显示错误 BUG
