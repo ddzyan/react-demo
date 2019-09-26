@@ -1,6 +1,10 @@
-### 简介
+## 简介
 
-#### 什么是 redux
+- src-counter-react-redux :使用 react-redux 实现状态管理
+- src-counter-react :使用 react 实现状态管理
+- src-count-redux:使用 redux 实现状态管理
+
+### 什么是 redux
 
 ```shell
 yarn add redux
@@ -28,7 +32,13 @@ yarn add redux
 
 1. 将 state ,action 与 reducer 联系在一起的对象
 
-#### react-redux
+#### redux 重要方法
+
+- this.props.store.getState() 获取 redux 管理的状态
+- this.props.store.dispatch(action) 发布任务，修改 redux 管理的状态
+- this.store.subscribe() 监听 redux 管理的状态的改变，用于渲染组件
+
+### react-redux
 
 - 一个 react 插件库
 - 专门用来简化 react 应用中使用 redux
