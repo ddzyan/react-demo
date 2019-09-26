@@ -10,7 +10,7 @@ import { add, minus, asyncAdd } from "../redux/actions";
 import counter from "../components/counter";
 
 export default connect(
-  state => ({ count: state }),
+  state => ({ count: state.count }),
   {
     add,
     minus,
