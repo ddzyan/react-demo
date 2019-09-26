@@ -1,6 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 class Counter extends Component {
+  static propTypes = {
+    count: PropTypes.number.isRequired,
+    minus: PropTypes.func.isRequired,
+    add: PropTypes.func.isRequired
+  };
   add = () => {
     const value = this.countSelect.value * 1;
     this.props.add(value);
@@ -35,7 +41,8 @@ class Counter extends Component {
             <option value="2">2</option>
             <option value="3">3</option>
           </select>
-          <button onClick={this.add}>+</button> <button onClick={this.subtract}>-</button>
+          <button onClick={this.add}>+</button>{" "}
+          <button onClick={this.subtract}>-</button>
           <button onClick={this.addIf}>increment if add</button>
           <button onClick={this.addAsync}>increment async</button>
         </div>

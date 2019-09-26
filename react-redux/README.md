@@ -83,3 +83,13 @@ yarn add react-thunk
 ```shell
 yarn add redux-devtool-extension
 ```
+
+### 管理多个 reducer 函数
+
+```js
+import { combineReducers } from "redux";
+
+export default combineReducers({
+  counter
+});
+```
