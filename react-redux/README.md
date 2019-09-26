@@ -13,6 +13,10 @@ yarn add redux
 1. redux 是一个独立专门用于做状态管理的 js 库(不是 react 的插件库)
 2. 作用：集中式管理 react 应用中多个组件共享的状态
 
+#### 原理
+
+![image](./redux原理.png)
+
 #### redux 的三个核心概念
 
 ##### action
