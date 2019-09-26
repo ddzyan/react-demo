@@ -1,1 +1,71 @@
-- 组件传值
+### 简介
+
+#### 什么是 redux
+
+```shell
+yarn add redux
+```
+
+1. redux 是一个独立专门用于做状态管理的 js 库(不是 react 的插件库)
+2. 作用：集中式管理 react 应用中多个组件共享的状态
+
+#### redux 的三个核心概念
+
+##### action
+
+1. 标识要执行行为的对象
+2. 包含 2 个方面的属性
+   1. type:标识属性，值为字符串，唯一，必要属性
+   2. xxx:数据属性，值任意类型，可选属性
+3. 例子： const action = {type:"ADD",data:2}
+
+##### reducer
+
+1. 根据老的 state 和 action ,产生新的 state 的纯函数
+2. 注意：返回一个新的状态，不要直接修改老状态
+
+##### store
+
+1. 将 state ,action 与 reducer 联系在一起的对象
+
+#### react-redux
+
+- 一个 react 插件库
+- 专门用来简化 react 应用中使用 redux
+
+```shell
+yarn add react-redux
+```
+
+#### 将所有组件分成两大类
+
+1. 容器组件：负责和 redux store
+   1. 负责管理数据和业务逻辑，不负责 UI 呈现
+   2. 使用 redux 的 API
+   3. 一般保存在 containers 文件夹下
+2. UI 组件：
+   1. 只负责 UI 的呈现，不带有任何业务逻辑代码
+   2. 通过 props 接收数据
+   3. 不使用任何 redux 的 API
+   4. 一般保存在 components 文件夹下
+
+##### 文件夹基础结构
+
+- redux/action-types.js
+- redux/actions.js
+- redux/reducers.js
+- redux/store.js
+
+### redux 异步编程
+
+redux 是 redux 插件(异步中间件)，用于在 redux 中进行异步处理
+
+```shell
+yarn add react-thunk
+```
+
+### redux 调试工具
+
+```shell
+yarn add redux-devtool-extension
+```
