@@ -1,44 +1,29 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class Counter extends Component {
+  state = {};
+
   add = () => {
-    const value = this.countSelect.value * 1;
-    this.props.add(value);
+    this.props.add(1);
   };
 
-  subtract = () => {
-    const value = this.countSelect.value * 1;
-    this.props.minus(value);
+  minus = () => {
+    this.props.minus(1);
   };
 
-  addIf = () => {
-    const value = this.countSelect.value * 1;
-    const count = this.state.count + value;
-    if ((count + value) % 2 === 0) {
-      this.props.add(value);
-    }
-  };
-
-  addAsync = () => {
-    const value = this.countSelect.value * 1;
-    this.props.asyncAdd(value);
+  asycAdd = () => {
+    this.props.asyncAdd(10);
   };
 
   render() {
+    console.log("render()");
     const { count } = this.props;
     return (
       <div>
-        <div>timer:{count}</div>
-        <div>
-          <select ref={select => (this.countSelect = select)}>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </select>
-          <button onClick={this.add}>+</button> <button onClick={this.subtract}>-</button>
-          <button onClick={this.addIf}>increment if add</button>
-          <button onClick={this.addAsync}>increment async</button>
-        </div>
+        <h1>count:{count}</h1>
+        <button onClick={this.add}>add</button>
+        <button onClick={this.minus}>minus</button>
+        <button onClick={this.asycAdd}>asycAdd</button>
       </div>
     );
   }

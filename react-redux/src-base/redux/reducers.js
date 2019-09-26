@@ -1,4 +1,4 @@
-import { ADD, MINUS } from "./action-types";
+import { ADD, MINUS } from './action-types';
 
 const counter = (state = 0, action) => {
   switch (action.type) {
@@ -6,6 +6,7 @@ const counter = (state = 0, action) => {
       return state + action.number;
     case MINUS:
       return state - action.number;
+
     default:
       return state;
   }

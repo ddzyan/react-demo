@@ -1,13 +1,8 @@
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
-import { add, minus, asyncAdd } from '../redux/actions';
-import counter from '../components/counter';
-
+import Counter from "../components/counter";
+import { add, minus, asyncAdd } from "../redux/actions";
 export default connect(
   state => ({ count: state }),
-  {
-    add,
-    minus,
-    asyncAdd
-  }
-)(counter);
+  { add, minus, asyncAdd }
+)(Counter);
