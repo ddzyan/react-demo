@@ -104,6 +104,7 @@ class Header extends Component {
    * 使用 自定义 LinkButton ，解决 a 标签无效的 href 属性报警
    */
   render() {
+    console.log("header render()");
     const { currentDate, dayPictureUrl, weather } = this.state;
     const title = this.getTitle();
     return (
