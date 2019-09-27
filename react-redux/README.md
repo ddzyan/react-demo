@@ -4,6 +4,7 @@
 - src-counter-react :使用 react 实现状态管理
 - src-count-redux:使用 redux 实现状态管理
 - src-min-redux:使用自定义的 redux 实现状态管理，了解 redux 的内部实现
+- src-min-react-redux:使用自定义的 react-redux 优化了 redux 的使用
 
 ### 什么是 redux
 
