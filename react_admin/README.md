@@ -151,3 +151,14 @@ yarn start
    4. home 组件
    5. left-nav 组件
 3. 修复 BUG，在 user 组件中，如果用户修改/删除的角色是当前自己的角色，则需要重置 redux state user
+
+#### 自定义 redux 与 react-redux
+
+1. redux 对外暴露的核心几个函数
+   1. createStore()
+   2. combineReducers()
+   3. applyMiddleware()
+2. store
+   1. getState() 返回内部保存的 state 对象
+   2. dispatch() 参数为 action 对象
+   3. subscribe() 参数为监听内部 state 更新的回调函数

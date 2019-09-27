@@ -3,6 +3,7 @@
 - src-counter-react-redux :使用 react-redux 实现状态管理
 - src-counter-react :使用 react 实现状态管理
 - src-count-redux:使用 redux 实现状态管理
+- src-min-redux:使用自定义的 redux 实现状态管理，了解 redux 的内部实现
 
 ### 什么是 redux
 
@@ -93,3 +94,34 @@ export default combineReducers({
   counter
 });
 ```
+
+### 自定义 redux 与 react-redux
+
+#### 自定义 redux 库
+
+了解 redux 内部实现原理
+
+1. redux 对外暴露的核心几个函数
+   1. createStore()
+   2. combineReducers()
+   3. applyMiddleware()
+2. store
+   1. getState() 返回内部保存的 state 对象
+   2. dispatch() 参数为 action 对象
+   3. subscribe() 参数为监听内部 state 更新的回调函数
+
+#### 自定义 react-redux 库
+
+使用 react-redux 简化 redux 的编写
+
+1. react-redux 向外暴露的接口
+   1. Provider 组件
+   2. connect() 函数
+2. Provider
+   1. 接收 store 属性
+   2. 让所有容器组件都可以看到 store,从而通过 store 读取/更新状态
+3. connect()
+   1. 接收 2 个参数：mapStateToProps , mapDispatchToProps
+   2. mapStateToProps :向 UI 组件 props 传递一般属性
+   3. mapDispatchToProps:向 UI 组件 props 传递函数属性
+   4. connect() 执行的返回值为一个高阶组件：包装 UI 组件，返回一个新的容器组件，组件会向 UI 组件传递一般/函数属性
