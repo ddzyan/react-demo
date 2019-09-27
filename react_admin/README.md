@@ -154,6 +154,8 @@ yarn start
 
 #### 自定义 redux 与 react-redux
 
+具体参考 react-redux 项目
+
 1. redux 对外暴露的核心几个函数
    1. createStore()
    2. combineReducers()
