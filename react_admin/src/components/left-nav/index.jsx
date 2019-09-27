@@ -7,7 +7,6 @@ import "./index.less";
 import { setHeadTitle } from "../../redux/actions";
 import logo from "../../assets/images/logo.png";
 import menuList from "../../config/memuConfig";
-import memoryUtils from "../../utils/memoryUtils";
 const { SubMenu } = Menu;
 class LeftNav extends Component {
   state = {};
@@ -20,7 +19,7 @@ class LeftNav extends Component {
     const {
       username,
       role: { menus }
-    } = memoryUtils.user;
+    } = this.props.user;
     /**
      * admin 用户显示所有
      * isPublic 为公用菜单，向所有人开放
@@ -144,6 +143,6 @@ class LeftNav extends Component {
  */
 
 export default connect(
-  state => ({}),
+  state => ({ user: state.user }),
   { setHeadTitle }
 )(withRouter(LeftNav));

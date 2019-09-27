@@ -2,7 +2,7 @@
  * @Author: dingdongzhao
  * @Date: 2019-09-15 23:50:37
  * @Last Modified by: dingdongzhao
- * @Last Modified time: 2019-09-17 10:34:17
+ * @Last Modified time: 2019-09-27 11:07:11
  */
 import axios from "axios";
 import { message } from "antd";
@@ -42,11 +42,7 @@ export default function(url, data = {}, method = "GET") {
 
     promise
       .then(response => {
-        if (!response.data.status) {
-          resolve(response.data);
-        } else {
-          message.error(response.data.msg);
-        }
+        resolve(response.data);
       })
       .catch(err => {
         message.error(err.message);

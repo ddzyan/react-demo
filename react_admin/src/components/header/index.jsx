@@ -5,10 +5,9 @@ import { connect } from "react-redux";
 
 import LinkButton from "../link-button";
 import menuList from "../../config/memuConfig";
-import storageUtils from "../../utils/storageUtils";
-import memoryUtils from "../../utils/memoryUtils";
 import { getWeather } from "../../api";
 import { formateDate } from "../../utils/dateUtils";
+import { resetUser } from "../../redux/actions";
 import "./index.less";
 
 const { confirm } = Modal;
@@ -91,11 +90,11 @@ class Header extends Component {
   loginOut = () => {
     confirm({
       title: "是否退出登陆?",
+      okText: "确认",
+      cancelText: "取消",
       //content: "将跳转到",
       onOk: () => {
-        storageUtils.removeUser();
-        memoryUtils.user = {};
-        this.props.history.replace("/login");
+        this.props.resetUser();
       }
     });
   };
@@ -108,15 +107,15 @@ class Header extends Component {
     console.log("header render()");
     const { currentDate, dayPictureUrl, weather } = this.state;
     //const title = this.getTitle();
-    const title = this.props.headTitle;
+    const { user, headTitle } = this.props;
     return (
       <div className="header">
         <div className="header-top">
-          <span>欢迎,{memoryUtils.user.username}</span>
+          <span>欢迎,{user.username}</span>
           <LinkButton onClick={this.loginOut}>退出</LinkButton>
         </div>
         <div className="header-bottom">
-          <div className="header-bottom-left">{title}</div>
+          <div className="header-bottom-left">{headTitle}</div>
           <div className="header-bottom-right">
             <span>{currentDate}</span>
             <img src={dayPictureUrl} alt="aa"></img>
@@ -134,6 +133,6 @@ class Header extends Component {
 const WrapHeader = withRouter(Header);
 
 export default connect(
-  state => ({ headTitle: state.headTitle }),
-  {}
+  state => ({ headTitle: state.headTitle, user: state.user }),
+  { resetUser }
 )(WrapHeader);

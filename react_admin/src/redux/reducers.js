@@ -2,8 +2,14 @@
  * 根据老的state和传入的action,生成新的state
  */
 import { combineReducers } from "redux";
-import { SET_HEAD_TITLE } from "./action-types";
-import memoryUtils from "../utils/memoryUtils";
+
+import {
+  SET_HEAD_TITLE,
+  RECIVER_USER,
+  SHOW_MSG,
+  RESET_USER
+} from "./action-types";
+import storageUtils from "../utils/storageUtils";
 
 const initHeadTitle = "首页";
 const headTitle = (state = initHeadTitle, action) => {
@@ -14,9 +20,16 @@ const headTitle = (state = initHeadTitle, action) => {
       return state;
   }
 };
-const initUser = memoryUtils.user;
+const initUser = storageUtils.getUser();
 const user = (state = initUser, action) => {
   switch (action.type) {
+    case RECIVER_USER:
+      return action.user;
+    case SHOW_MSG:
+      const errorMessage = action.errorMessage;
+      return { ...state, errorMessage };
+    case RESET_USER:
+      return {};
     default:
       return state;
   }

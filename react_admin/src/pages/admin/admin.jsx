@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Layout } from "antd";
+import { connect } from "react-redux";
 import { Redirect, Switch, Route } from "react-router-dom";
 
 import "./admin.less";
@@ -14,7 +15,6 @@ import Product from "../product/product";
 import Role from "../role/role";
 import User from "../user/user";
 
-import memoryUtils from "../../utils/memoryUtils";
 import LeftNav from "../../components/left-nav";
 import Header from "../../components/header";
 
@@ -23,7 +23,7 @@ class Admin extends Component {
   state = {};
 
   render() {
-    const { user } = memoryUtils;
+    const { user } = this.props;
     if (!user._id) {
       return <Redirect to="/login"></Redirect>;
     }
@@ -58,4 +58,4 @@ class Admin extends Component {
   }
 }
 
-export default Admin;
+export default connect(state => ({ user: state.user }))(Admin);

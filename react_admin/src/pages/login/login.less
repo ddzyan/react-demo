@@ -1,8 +1,8 @@
 .login {
   height: 100%;
   width: 100%;
-  background-image: url('./images/bg.jpg');
-  background-size: 100%;
+  background-image: url("./images/bg.jpg");
+  background-size: 100% 100%;
   .login-title {
     align-items: center;
     display: flex;
@@ -11,7 +11,7 @@
     img {
       width: 40px;
       height: 40px;
-      margin: 0px 15px 0px 40px;
+      margin: 0px 15px 0px 50px;
     }
     h1 {
       text-align: center;
@@ -21,6 +21,7 @@
     }
   }
   .login-content {
+    position: relative;
     margin: 50px auto;
     background-color: white;
     width: 400px;
@@ -35,6 +36,24 @@
     .login-form {
       .login-form-button {
         width: 100%;
+      }
+    }
+    .error-msg {
+      visibility: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      text-align: center;
+      height: 30px;
+      width: 100%;
+      background: #f60c1a;
+      color: #ffffff;
+      font-size: 16px;
+      transform: translateY(-30px);
+      transition: all 0.3s;
+      &.show {
+        visibility: visible;
+        transform: translateY(0);
       }
     }
   }

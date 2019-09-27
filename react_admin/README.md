@@ -136,7 +136,18 @@ yarn start
 
 1. 远程分支合并，本地拉取最新代码
 
-#### redux 管理多组件共享状态
+#### redux 管理 headTitle
 
 - 管理 header 中的 title,修改 left-nav 组件加载菜单时候，设置 redux 内的 headTitle.修改 header 中的 title 取自 redux
-- 解决登陆时，headTitle 显示错误 BUG
+- 解决重新登陆时，headTitle 显示错误 BUG
+
+#### redux 管理 user
+
+1. 使用用 redux 管理 user，去除项目中原本使用的 momeryUtil 保存的 user
+2. 在 redux 中异步实现用户登陆，并且保存数据，如果失败保存错误信息到 user 对象的 errorMessage 属性中，提供 Login 组件获取
+   1. login 组件
+   2. header 组件
+   3. role 组件
+   4. home 组件
+   5. left-nav 组件
+3. 修复 BUG，在 user 组件中，如果用户修改/删除的角色是当前自己的角色，则需要重置 redux state user

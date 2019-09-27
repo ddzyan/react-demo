@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Card, Table, Button, message, Modal, Popconfirm } from "antd";
+import { connect } from "react-redux";
 
+import { resetUser } from "../../redux/actions";
 import { PAGE_SIZE } from "../../config/constantConfig";
 import { getUserList, addOrUpdateUser, deleteUser } from "../../api";
 import LinkButton from "../../components/link-button";
@@ -70,6 +72,7 @@ class User extends Component {
 
   getUserList = async () => {
     const response = await getUserList();
+    console.log("getUserList :", response);
     if (response && response.status === 0) {
       const { users, roles } = response.data;
       this.initRoleNames(roles);
@@ -103,10 +106,17 @@ class User extends Component {
         }
         const response = await addOrUpdateUser(user);
         if (response && response.status === 0) {
-          message.success(`${user._id ? "更新" : "添加"}成功`);
+          if (this.props.user.username === username) {
+            message.success(`更新角色是当前用户角色，请重新登陆`);
+            this.props.resetUser();
+          } else {
+            message.success(`${user._id ? "更新" : "添加"}成功`);
+          }
+          // 如果修改的是当前用户的角色，需要重新登陆，刷新菜单栏
         } else {
           message.error(`${user._id ? "更新" : "添加"}失败`);
         }
+
         this.getUserList();
         this.form.resetFields();
         this.setState({
@@ -186,4 +196,7 @@ class User extends Component {
   }
 }
 
-export default User;
+export default connect(
+  state => ({ user: state.user }),
+  { resetUser }
+)(User);
