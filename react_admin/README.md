@@ -164,3 +164,7 @@ yarn start
    1. getState() 返回内部保存的 state 对象
    2. dispatch() 参数为 action 对象
    3. subscribe() 参数为监听内部 state 更新的回调函数
+
+
+#### 完成图形图表界面
+1. 使用 echarts, echarts-for-react 模块完成柱形图
