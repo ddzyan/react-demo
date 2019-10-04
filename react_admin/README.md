@@ -168,3 +168,4 @@ yarn start
 
 #### 完成图形图表界面
 1. 使用 echarts, echarts-for-react 模块完成柱形图
+2. 完成 折线图 和 饼图（直接拷贝实例代码 https://www.echartsjs.com/examples/en/index.html）

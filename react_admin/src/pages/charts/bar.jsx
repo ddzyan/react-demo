@@ -2,12 +2,18 @@ import React, { Component } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import { Card, Button } from "antd"
 
+/**
+ * 柱形图组件
+ */
 class Bar extends Component {
   state = {
     sales: [120, 200, 150, 80, 70, 110, 130],
     stores: [110, 150, 100, 180, 170, 130, 160]
   };
 
+  /**
+   * 获取图标配置参数
+   */
   getOption = (sales, stores) => {
     return {
       title: {
@@ -36,6 +42,9 @@ class Bar extends Component {
     };
   }
 
+  /**
+   * 更新图标数据
+   */
   update = () => {
     this.setState(({ sales, stores }) => (
       {
@@ -48,12 +57,17 @@ class Bar extends Component {
 
   render () {
     const { stores, sales } = this.state
-    const title = <Button type="primary" onClick={this.update}>更新</Button>
 
     return (
-      <Card title={title} >
-        <ReactEcharts option={this.getOption(sales, stores)} />
-      </Card>
+      <div>
+        <Card >
+          <Button type="primary" onClick={this.update}>更新</Button>
+        </Card>
+
+        <Card title="柱形图一" >
+          <ReactEcharts option={this.getOption(sales, stores)} />
+        </Card>
+      </div>
     )
   }
 }
