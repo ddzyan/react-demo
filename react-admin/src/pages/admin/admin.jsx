@@ -14,7 +14,7 @@ import Order from "../order/order";
 import Product from "../product/product";
 import Role from "../role/role";
 import User from "../user/user";
-
+import NotFound from "../not-fount/not-found";
 import LeftNav from "../../components/left-nav";
 import Header from "../../components/header";
 
@@ -47,6 +47,7 @@ class Admin extends Component {
               <Route path="/charts/pie" component={Pie} />
               <Route path="/charts/line" component={Line} />
               <Route path="/order" component={Order} />
+              <Route component={NotFound} />
             </Switch>
           </Content>
           <Footer style={{ textAlign: "center", color: "#cccc" }}>

@@ -85,6 +85,10 @@ class ProductHome extends Component {
               </LinkButton>
               <LinkButton
                 onClick={() =>
+                  /**
+                   * 此语法只支持browerRouter
+                   * 通过传入第二个参数，将 product 对象传递到子组件
+                   */
                   this.props.history.push("/product/update", product)
                 }
               >
@@ -121,6 +125,7 @@ class ProductHome extends Component {
     this.pageNum = current;
     const { searchType, searchValue } = this.state;
     let response;
+    // 判读是否需要根据输入的关键字进行过滤
     if (searchValue.length > 0) {
       response = await searchProductList(
         this.pageNum,

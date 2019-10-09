@@ -165,7 +165,22 @@ yarn start
    2. dispatch() 参数为 action 对象
    3. subscribe() 参数为监听内部 state 更新的回调函数
 
-
 #### 完成图形图表界面
+
 1. 使用 echarts, echarts-for-react 模块完成柱形图
 2. 完成 折线图 和 饼图（直接拷贝实例代码 https://www.echartsjs.com/examples/en/index.html）
+
+#### 添加 404 页面
+
+- 如果路径不匹配，则添加 404 页面
+
+#### 解决 hashRouter BUG
+
+1. hashRouter 无法通过 this.props.history.push("/product/update", product) 传递参数,解决办法如下
+   1. 将 product 存在内存中，保证所有组件都可以获取
+   2. 存在 redux 中
+   3. 使用 context 中
+
+#### 生产环境解决跨域问题
+
+- 生产打包后的项目，无法再使用前端代理，可以通过后端服务配置代理解决
