@@ -184,3 +184,14 @@ yarn start
 #### 生产环境解决跨域问题
 
 - 生产打包后的项目，无法再使用前端代理，可以通过后端服务配置代理解决
+
+#### 生产部署
+
+```shell
+npm i -g serve
+
+# build 为文件夹目录， 后访问http://localhost:5000
+serve build
+```
+
+配置 nginx 代理，解决跨域问题
