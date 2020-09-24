@@ -15,6 +15,17 @@ const App = props => {
       if (!item.component) return;
 
       if (item.childRoutes) {
+        const childRoutes = renderRoutes(item.childRoutes, newContextPath);
+        children.push(
+          <Route
+            key={newContextPath}
+            render={props => (
+              <item.component {...props}>{childRoutes}</item.component>
+            )}
+            path={newContextPath}
+          />
+        );
+        item.childRoutes.forEach(r => renderRoute(r, newContextPath));
       } else {
         children.push(
           <Route
