@@ -50,7 +50,6 @@ function Toolbar(props) {
 }
 
 function ThemedButton() {
-  // 调用 useContext 的组件总会在 context 值变化时重写渲染
   // 使用 useContext 只是让你能够读取context的值，以及订阅 context 的变化（组件会在值变化时重写渲染）
   const theme = useContext(ThemeContext);
   return (

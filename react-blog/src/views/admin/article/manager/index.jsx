@@ -1,8 +1,10 @@
-import { Form } from 'antd';
+import { Form, Input } from 'antd';
 import React from 'react';
-import { connect, useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import useBreadcrumb from '../../../../hooks/useBreadcrumb';
+
+const { Item } = Form;
 
 function ArticleManager(props) {
   useBreadcrumb(['文章管理']);
@@ -15,11 +17,25 @@ function ArticleManager(props) {
 
   const { getFieldDecorator } = props.form;
 
+  function handleSubmit(e) {
+    e.preventDefault();
+  }
+
   return (
     <div className="admin-article-manager">
-      <Form></Form>
+      <Form
+        layout="inline"
+        onSubmit={handleSubmit}
+        style={{ marginBottom: 20 }}
+      >
+        <Item label="关键词">
+          {getFieldDecorator('keyword')(
+            <Input placeholder="请输入文章关键词" allowClear />
+          )}
+        </Item>
+      </Form>
     </div>
   );
 }
 
-export default ArticleManager;
+export default Form.create()(ArticleManager);
