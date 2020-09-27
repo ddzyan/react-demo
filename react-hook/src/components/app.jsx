@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 
 const themes = {
   light: {
@@ -14,10 +14,27 @@ const themes = {
 const ThemeContext = React.createContext(themes.light);
 
 function App() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    console.log('useEffect');
+    document.title = `You clicked ${count} times`;
+  });
+
   return (
-    <ThemeContext.Provider value={themes.dark}>
-      <Toolbar />
-    </ThemeContext.Provider>
+    <div>
+      <p>count {count}</p>
+      <button
+        onClick={() => {
+          setCount(count + 1);
+        }}
+      >
+        add
+      </button>
+      <ThemeContext.Provider value={themes.dark}>
+        <Toolbar />
+      </ThemeContext.Provider>
+    </div>
   );
 }
 
