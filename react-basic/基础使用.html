@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+<body>
+    <div id='root'></div>
+</body>
+<script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script type="text/babel">
+  // 必须使用 type="text/babel"，这样会使编写的jsx 通过 babel 编辑转换为标准的js
+  const MyComponent = function(){
+    // 因为 babel 转编译后开启了严格模式，
+    // 所以函数内的 this 对象不再指向 全局，而是 undefined
+    console.log(this);
+    return (
+      <h2>
+        Hello React
+      </h2>)
+  }
+
+ 
+  ReactDOM.render(MyComponent, document.getElementById('id'));
+  // 这段代码执行需要经过下面几个步骤
+  // 1. ReactDom 将解析组件标签，找到 MyComponent 组件
+  // 2. 发现组件为函数组件，则调用执行，返回一个虚拟Dom，然后再将虚拟Dom转换为真实Dom返回渲染
+
+</script>
+</html>
