@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>refs</title>
+</head>
+
+<body>
+  <div id="test"></div>
+</body>
+<script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script type="text/babel">
+  class Demo extends React.Component {
+    showDate1 = () => {
+      const {input1} = this.refs;
+      console.log(input1.value);
+    }
+
+    showDate2 = () =>{
+      const {input2} = this.refs;
+      console.log(input2.value);
+    }
+
+    render() {
+      return (
+        <div>
+          <input ref="input1" type="text" placeholder="点击按钮提示" />
+          <button onClick={this.showDate1}>确认</button>
+          <input ref="input2" onBlur={this.showDate2} ref="input2" type="text" placeholder="失去焦点提示" />
+        </div>
+      )
+    }
+  }
+
+  ReactDOM.render(<Demo />, document.getElementById('test'))
+</script>
+
+</html>
